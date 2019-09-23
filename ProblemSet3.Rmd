@@ -1,0 +1,43 @@
+---
+title: "Problem Set 3"
+author: "Mariah Boudreau"
+date: "9/20/2019"
+output: pdf_document
+---
+```{r, echo=FALSE}
+load("~/Downloads/COMADRE_v.3.0.0.RData")
+```
+
+## 1) What species (and location if available) did you choose? Why did you choose the species?
+
+We choose the Eastern Hellbender, the largest salamander. They live in the Appalachian Mountain range. These appear to be a very intersting species that I have never learned about before. The paper for this model comes from the paper at this link https://www.sciencedirect.com/science/article/pii/S161713811300054X.
+
+
+```{r}
+comadre$mat[203][[1]]
+
+comadre$matrixClass[203]
+
+comadre$metadata$Journal[203][[1]]
+
+comadre$metadata$Authors[203][[1]]
+
+```
+
+The matrix describes the stages of Eggs/Larvae, Sub-adults, and Adults.
+
+## 2) What question do you want to answer about this population (e.g. population status, best management strategies)?
+
+We can ask which stage is the most sensitive to intervention, then we could aid the population of this Eastern Hellbender. 
+
+## 3) Calculate eigenvalue, stable age distribution, elasticity, and sensitivity. What does this tell you about the population?
+
+```{r}
+EHMat = comadre$mat[203][[1]]$matA
+EHMat 
+eigen(EHMat)
+
+
+```
+
+
