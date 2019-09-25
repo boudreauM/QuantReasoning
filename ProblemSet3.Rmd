@@ -1,0 +1,68 @@
+---
+title: "Problem Set 3"
+author: "Mariah Boudreau and Ben Camber"
+date: "9/20/2019"
+output: pdf_document
+---
+```{r, echo=FALSE}
+load("~/Downloads/COMADRE_v.3.0.0.RData")
+```
+
+## 1) What species (and location if available) did you choose? Why did you choose the species?
+
+We choose the Eastern Hellbender, the largest salamander. They live in the Appalachian Mountain range. These appear to be a very intersting species that I have never learned about before. The paper for this model comes from the paper at this link https://www.sciencedirect.com/science/article/pii/S161713811300054X.
+
+
+```{r, echo=FALSE}
+comadre$mat[203][[1]]$matA
+
+# comadre$matrixClass[203]
+
+# comadre$metadata$Journal[203][[1]]
+
+# comadre$metadata$Authors[203][[1]]
+
+```
+
+The matrix describes the stages of Eggs/Larvae, Sub-adults, and Adults, respectively.
+
+## 2) What question do you want to answer about this population (e.g. population status, best management strategies)?
+
+We can ask which stage is the most sensitive to intervention, then we could aid the population of this Eastern Hellbender. 
+
+## 3) Calculate eigenvalue, stable age distribution, elasticity, and sensitivity. What does this tell you about the population?
+
+```{r}
+EHMat = comadre$mat[203][[1]]$matA
+EHMat
+eigen(EHMat)
+standardEigenvec <- eigen(EHMat)$vectors[,1]/(eigen(EHMat)$vectors[1,1]+eigen(EHMat)$vectors[2,1]+eigen(EHMat)$vectors[3,1])
+
+sensitivity <- function(A) {
+  d <- eigen(A)$values   # eigen values
+  w <- eigen(A)$vectors  # right eigen vectors
+  v <- Conj(solve(w))    # complex conjugate of left eigen vectors
+  # output of eigenvalues is decreasingly sorted.
+  v[1,] %*% t(w[,1])
+}
+S <- sensitivity(EHMat)
+S
+
+L1 <- Re(eigen(EHMat)$values[1])
+elas <- (EHMat/L1) * S
+E <- round(elas, 3)
+E
+
+```
+
+The survival of embryo/larval is 0.10, the probability of remaining a subadult ($P_i$) is 0.711, and the probability of juvenile becoming adult is 0.038.  The adult survival rate is 0.80. 
+
+Our dominant eigenvalue was the value of `r eigen(EHMat)$values[1]`. This interprets to the Easten Hellbender's popultation growing at a rate of approximately 2.75%. The standardized eigenvector associated with this eigenvalue is `r standardEigenvec`. The interpretation for this standard eigenvector is the standard age distribution where there are about 84% of the population in the Egg/Laval stage, about 15% of the population in the Subadult/Juvenile stage, and about 1% in the Adult stage.
+
+The sensitivity for this matrix is given above in the variable S. The elasticity for this matrix is given above in the variable E.
+
+The sensitivity matrix shows that changing probability of a juvenile becoming an adult will increase the rate of growth the most out of all the parameters. The next most sensitive parameter is the survival rate of eggs/laval. The 31.86 in row 3 and column 1 would change the rate of growth the most, however, there is no parameter for adults transitioning back into eggs. The elasticity matrix shows that the proportional sensitivity is highest in the adult survival rate, and the probability of a subadult remaining a subadult. 
+
+## 4) Using the calculations in part (c), or additional calculations, address the question you proposed in part (b).
+
+The stage that is most sensitive to intervention would be the juvnile stage because the ratios from the elasticity matrix and the values from the sensitivity matrix show that stage being the most receptive to intervention. If the population was growing too much for a population, then it would be useful to understand the survival rates of eggs/laval, and juveniles and how to decrease these areas to lessen overall growth. We were also under the assumption that 
