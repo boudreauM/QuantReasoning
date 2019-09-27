@@ -65,4 +65,4 @@ The sensitivity matrix shows that changing probability of a juvenile becoming an
 
 ## 4) Using the calculations in part (c), or additional calculations, address the question you proposed in part (b).
 
-The stage that is most sensitive to intervention would be the juvnile stage because the ratios from the elasticity matrix and the values from the sensitivity matrix show that stage being the most receptive to intervention. If the population was growing too much for a population, then it would be useful to understand the survival rates of eggs/laval, and juveniles and how to decrease these areas to lessen overall growth. We were also under the assumption that 
+The stage that is most sensitive to intervention would be the juvnile stage because the ratios from the elasticity matrix and the values from the sensitivity matrix show that stage being the most receptive to intervention. If the population was growing too much for a population, then it would be useful to understand the survival rates of eggs/laval, and juveniles and how to decrease these areas to lessen overall growth. We were also under the assumption that (something we still have to finish this sentence)
