@@ -5,7 +5,7 @@ date: "9/20/2019"
 output: pdf_document
 ---
 ```{r, echo=FALSE}
-load("~/Downloads/COMADRE_v.3.0.0.RData")
+load("COMADRE_v.3.0.0.RData")
 ```
 
 ## 1) What species (and location if available) did you choose? Why did you choose the species?
@@ -61,8 +61,16 @@ Our dominant eigenvalue was the value of `r eigen(EHMat)$values[1]`. This interp
 
 The sensitivity for this matrix is given above in the variable S. The elasticity for this matrix is given above in the variable E.
 
-The sensitivity matrix shows that changing probability of a juvenile becoming an adult will increase the rate of growth the most out of all the parameters. The next most sensitive parameter is the survival rate of eggs/laval. The 31.86 in row 3 and column 1 would change the rate of growth the most, however, there is no parameter for adults transitioning back into eggs. The elasticity matrix shows that the proportional sensitivity is highest in the adult survival rate, and the probability of a subadult remaining a subadult. 
+The sensitivity matrix shows that changing probability of a juvenile becoming an adult will increase the rate of growth the most out of all the parameters. The next most sensitive parameter is the survival rate of eggs/laval. The 31.86 in row 3 and column 1 would change the rate of growth the most, however, there is no way for eggs/larvae to transition directly to adulthood. The elasticity matrix shows that the proportional sensitivity is highest in the adult survival rate, and the probability of a subadult remaining a subadult. 
 
 ## 4) Using the calculations in part (c), or additional calculations, address the question you proposed in part (b).
 
-The stage that is most sensitive to intervention would be the juvnile stage because the ratios from the elasticity matrix and the values from the sensitivity matrix show that stage being the most receptive to intervention. If the population was growing too much for a population, then it would be useful to understand the survival rates of eggs/laval, and juveniles and how to decrease these areas to lessen overall growth. We were also under the assumption that (something we still have to finish this sentence)
+The best way to manage Eastern Hellbender populations seems to be ensuring that juveniles survive to adulthood and that adults persist for a long time. Fecundity and egg survival parameters are insensitive and inelastic, which is consistent with what we know about organisms with an "r selected" reproduction strategy. Interestingly, the model was most sensitive at the transition from egg/larva to adult, and while that can't happen in nature, we could (and do) facilitate this by catching wild EH larvae and allowing them to mature in captivity, then releasing adults into the wild to breed.
+
+
+## Easton comments
+
+- Overall, really nice job on this assignment. You receive full points. The calculations were done correctly and you did a nice job at interpreting the math into biology. 
+- The in-line R code for question 3 looks really nice as well
+- To make pretty matrices (and tables) in R you can also try the xtable or kable packages
+- I modified your first code chunk to call data not from the downloads folder. It is important to use "relative paths" when collaborating with others. 
