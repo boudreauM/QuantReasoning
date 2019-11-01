@@ -21,6 +21,6 @@ The map includes Hydraulic Unit Codes (HUC), a system derived by USGS to delimit
 <!--Make sure this file is in your working directory for this chunk
     of code to work. -->
 ```{r, echo=FALSE}
-dat <- read.csv("./NAS-Data-Download.csv")
+dat <- read.csv("NAS-Data-Download.csv")
 ```
 
