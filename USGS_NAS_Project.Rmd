@@ -1,0 +1,18 @@
+---
+title: "USGS NAS Project"
+author: "Mariah Boudreau, Kerria Burns, and Amanda Jones"
+date: "12/10/2019"
+output: pdf_document
+---
+# Introduction
+
+
+# Analysis
+
+
+<!--Make sure this file is in your working directory for this chunk
+    of code to work. -->
+```{r, echo=FALSE}
+dat <- read.csv("./NAS-Data-Download.csv")
+```
+
