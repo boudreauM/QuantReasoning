@@ -2,7 +2,7 @@
 title: "USGS_NAS"
 author: "Mariah Boudreau, Kerria Burns, Amanda Jones"
 date: "11/1/2019"
-output: word_document
+output: pdf_document
 ---
 The source is the United States Geological Survey (USGS) Nonindigenous Aquatic 
 Species (NAS) data set. It is a collection of zebra mussel sightings across the United States. 
@@ -18,9 +18,34 @@ Zebra mussel sightings represented by size and color of circle – darker and la
 The map includes Hydraulic Unit Codes (HUC), a system derived by USGS to delimit subregions within the country. 
 	An inquiry then could be to standardize each HUC by area to find the number of zebra mussels per unit area to determine at which locations the highest density occurs. Similarly, bins of degrees of latitude could be derived (to reduce the step of standardization and bypass the use of HUC altogether, a possible benefit of which would be that measurements of latitude might yield more climatically relevant data rather than political/economic divisions), to again determine the density of zebra mussels per unit (as yet to be defined). This could be combined with climatic information to determine which climate conditions favor the establishment and invasion of zebra mussels to the most severe extent. A time series could be constructed to see if there were certain time periods that showed more movement than others. The type of analysis could be done on a map similar to the one above to see the visual change as well. 
 
-<!--Make sure this file is in your working directory for this chunk
-    of code to work. -->
+
 ```{r, echo=FALSE}
 dat <- read.csv("NAS-Data-Download.csv")
+library(dplyr)
+library(ggplot2)
+```
+
+
+```{r, echo = FALSE}
+
+# Checking to unique HUC ID Numbers
+as.data.frame(table(dat$HUC.8.Number))
+# There are 350 unique HUC ID numbers
+# That means there are 350 different locations for this data
+```
+
+This chunk will be to filter the unnecessary parts of the data
+```{r}
+
+```
+
+
+
+```{r}
+# Just looking at some different ways to visualize and understand the data
+ggplot(dat, aes(x=dat$HUC.8.Number, y=dat$State)) + geom_point(aes(col=dat$Year), size=3) +labs(title="HUC Number vs. State", subtitle="From USGS Zebra Mussel Dataset", y="State", x="HUC Number")
+
+
+ggplot(dat, aes(x=dat$HUC.8.Number, y=dat$Year)) + geom_point(aes(col=dat$State), size=3) +labs(title="HUC Number vs. Year", subtitle="From USGS Zebra Mussel Dataset", y="Year", x="HUC Number")
 ```
 
