@@ -12,7 +12,8 @@ states <- ggplot(data = US) +
   coord_fixed(1.3) +
   guides(fill=FALSE)
 
-map1 <- states + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=dat,alpha=0.2)
+#animated through the years, color coded by Status
+map1 <- states + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=dat,alpha=0.2)+transition_states(dat$Year)
 
 
 
