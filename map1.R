@@ -3,7 +3,6 @@ dat <- read.csv("C:/Users/kmb057/Documents/FundamentalsQuantReasoning/QuantReaso
 #remove 0,0 coordinate row
 dat <- dat[-5810,]
 
-
 #map of the 50 states
 US <- map_data("state") 
 
@@ -15,8 +14,12 @@ states <- ggplot(data = US) +
 #show change through time from earliest to latest
 dat$Year <- sort(dat$Year,decreasing=F)
 
-#animated through the years, color coded by Status
 map1 <- states + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=dat,alpha=0.2)+transition_states(dat$Year)
+
+#population in 2019
+latest <- dat[dat$Year=="2019",]
+map2 <- states + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=latest,alpha=0.2)
+
 
 
 
