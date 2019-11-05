@@ -12,7 +12,7 @@ states <- ggplot(data = US) +
   coord_fixed(1.3) +
   guides(fill=FALSE)
 
-map1 <- states + geom_point(aes(x=Longitude,y=Latitude,size=Status,color=Status),data=dat,alpha=0.2)
+map1 <- states + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=dat,alpha=0.2)
 
 
 
