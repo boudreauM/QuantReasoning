@@ -12,6 +12,9 @@ states <- ggplot(data = US) +
   coord_fixed(1.3) +
   guides(fill=FALSE)
 
+#show change through time from earliest to latest
+dat$Year <- sort(dat$Year,decreasing=F)
+
 #animated through the years, color coded by Status
 map1 <- states + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=dat,alpha=0.2)+transition_states(dat$Year)
 
