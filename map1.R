@@ -1,5 +1,9 @@
 dat <- read.csv("C:/Users/kmb057/Documents/FundamentalsQuantReasoning/QuantReasoning/NAS-Data-Download.csv")
 
+library(ggplot2)
+library(maps)
+library(gganimate)
+
 #remove 0,0 coordinate row
 dat <- dat[-5810,]
 
