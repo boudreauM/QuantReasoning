@@ -1,11 +1,12 @@
 dat <- read.csv("C:/Users/kmb057/Documents/FundamentalsQuantReasoning/QuantReasoning/NAS-Data-Download.csv")
 
+#remove 0,0 coordinate row
+dat <- dat[-5810,]
+
 library(ggplot2)
 library(maps)
 library(gganimate)
-
-#remove 0,0 coordinate row
-dat <- dat[-5810,]
+library(dplyr)
 
 #map of the 50 states
 US <- map_data("state") 
@@ -24,13 +25,13 @@ map1 <- states + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=dat,al
 latest <- dat[dat$Year=="2019",]
 map2 <- states + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=latest,alpha=0.2)
 
+#animation of only those established or collected after 2000
+established_collected_post_2000 <- filter(dat[dat$Year>=2000,]) %>%
+  filter(Status=="established"|Status=="collected")
 
+established_collected_post_2000$Year <- sort(established_post_2000$Year,decreasing=F)
 
-
-
-#retain in dataset only rows with Status=collected or established
-#error replacement has one fewer row than data
-dat$Status<-dat[-(dat$Status=="eradicated" | dat$Status=="extirpated" | dat$Status=="failed" | dat$Status=="unknown"),]
+map3 <- states + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=established_collected_post_2000,alpha=0.2)+transition_states(established_collected_post_2000$Year)
 
 
 
