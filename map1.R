@@ -31,7 +31,19 @@ established_collected_post_2000 <- filter(dat[dat$Year>=2000,]) %>%
 
 established_collected_post_2000$Year <- sort(established_post_2000$Year,decreasing=F)
 
-map3 <- states + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=established_collected_post_2000,alpha=0.2)+transition_states(established_collected_post_2000$Year)
+map3 <- states + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=established_collected_post_2000,alpha=0.2)+transition_states(established_collected_post_2000$Year)+shadow_mark()
+
+
+
+
+#Plot number of zebra mussels sightings per year 
+Summarize_sightings_by_year_month <- dat %>% count(Year, Month,State)
+plot(Summarize_sightings_by_year_month$Year,Summarize_sightings_by_year_month$n)
+
+
+
+ggplot(Summarize_sightings_by_year_month, aes(fill=Summarize_sightings_by_year_month$State, y=Summarize_sightings_by_year_month$n, x=Summarize_sightings_by_year_month$Year)) + 
+  geom_bar(position="dodge", stat="identity")
 
 
 
