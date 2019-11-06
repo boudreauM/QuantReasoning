@@ -36,6 +36,9 @@ as.data.frame(table(dat$HUC.8.Number))
 
 This chunk will be to filter the unnecessary parts of the data
 ```{r}
+fil_dat <- select(dat, Specimen.Number, Species.ID, Group, Family, Scientific.Name, 
+                  Common.Name, Latitude, Longitude, Source, Accuracy, Drainage.Name, 
+                  HUC.8.Number, Year, Month, Day, Status)
 
 ```
 
@@ -43,9 +46,14 @@ This chunk will be to filter the unnecessary parts of the data
 
 ```{r}
 # Just looking at some different ways to visualize and understand the data
-ggplot(dat, aes(x=dat$HUC.8.Number, y=dat$State)) + geom_point(aes(col=dat$Year), size=3) +labs(title="HUC Number vs. State", subtitle="From USGS Zebra Mussel Dataset", y="State", x="HUC Number")
+ggplot(fil_dat, aes(x=dat$HUC.8.Number, y=dat$State)) + geom_point(aes(col=dat$Year), size=3) +labs(title="HUC Number vs. State", subtitle="From USGS Zebra Mussel Dataset", y="State", x="HUC Number")
 
 
-ggplot(dat, aes(x=dat$HUC.8.Number, y=dat$Year)) + geom_point(aes(col=dat$State), size=3) +labs(title="HUC Number vs. Year", subtitle="From USGS Zebra Mussel Dataset", y="Year", x="HUC Number")
+ggplot(fil_dat, aes(x=dat$HUC.8.Number, y=dat$Year)) + geom_point(aes(col=dat$State), size=3) +labs(title="HUC Number vs. Year", subtitle="From USGS Zebra Mussel Dataset", y="Year", x="HUC Number")
+
+
+counts <- table(fil_dat$HUC.8.Number)
+barplot(counts, main="HUC Distribution", 
+   xlab="Number of Occurances in HUC")
 ```
 
