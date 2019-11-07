@@ -46,4 +46,21 @@ ggplot(Summarize_sightings_by_year_month, aes(fill=Summarize_sightings_by_year_m
   geom_bar(position="dodge", stat="identity")
 
 
+#filter data for only Great Lakes lat and long but it doesn't work yet
+BorderingGreatLakes <- c("New York","Pennsylvania","Ohio","Indiana","Michigan","Illinois","Wisconsin","Minnesota")
+PlottingBorder <- map_data("state", region=BorderingGreatLakes)
+
+Borders <- ggplot(data = PlottingBorder) + 
+  geom_polygon(aes(x = long, y = lat, group = group), color = "white") + 
+  coord_fixed(1.3) +
+  guides(fill=FALSE)+scale_y_continuous(breaks=seq(from=30,to=50,by=1))+scale_x_continuous(breaks=seq(from=-100,to=-70,by=1))
+
+
+
+Superior <- subset(dat, Latitude>46 & Latitude<50 & Longitude>84.5 & Longitude<92)
+map4 <- Borders + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=Superior,alpha=0.2)
+
+Michigan <- subset(dat, Latitude>42.5 & Latitude<46 & Longitude>84.5 & Longitude<88)
+map5 <- Borders + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=Michigan,alpha=0.2)
+
 
