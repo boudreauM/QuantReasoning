@@ -107,7 +107,8 @@ plot(Summarize_sightings_by_year_month$Year,Summarize_sightings_by_year_month$n)
 ggplot(Summarize_sightings_by_year_month, aes(fill=Summarize_sightings_by_year_month$State, y=Summarize_sightings_by_year_month$n, x=Summarize_sightings_by_year_month$Year)) + 
   geom_bar(position="dodge", stat="identity")
   
-  #filter data for only Great Lakes lat and long but it doesn't work yet
+  #filter data for only Great Lakes lat and long but it doesn't work yet. The problem is that the subsetting operation only returns the column names and no rows.
+  
 BorderingGreatLakes <- c("New York","Pennsylvania","Ohio","Indiana","Michigan","Illinois","Wisconsin","Minnesota")
 PlottingBorder <- map_data("state", region=BorderingGreatLakes)
 
