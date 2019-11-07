@@ -132,4 +132,11 @@ map7 <- Borders + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=Erie,
 Ontario <- dat %>% filter(Latitude>=43.25 & Latitude<=44) %>% filter(Longitude<=-78 & Longitude>=-80)
 map8 <- Borders + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=Ontario,alpha=0.2)
   
+ #all great Lakes plotted
+ GreatLakes <- Borders + 
+  geom_point(aes(x=Longitude,y=Latitude,color=Status),data=Superior,alpha=0.2)+
+  geom_point(aes(x=Longitude,y=Latitude,color="blue"),data=Michigan,alpha=0.2)+
+  geom_point(aes(x=Longitude,y=Latitude,color="green"),data=Huron,alpha=0.2)+
+  geom_point(aes(x=Longitude,y=Latitude,color="yellow"),data=Erie,alpha=0.2)+
+  geom_point(aes(x=Longitude,y=Latitude,color="purple"),data=Ontario,alpha=0.2)
 ```
