@@ -140,3 +140,10 @@ map8 <- Borders + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=Ontar
   geom_point(aes(x=Longitude,y=Latitude,color="yellow"),data=Erie,alpha=0.2)+
   geom_point(aes(x=Longitude,y=Latitude,color="purple"),data=Ontario,alpha=0.2)
 ```
+
+
+
+```{r}
+#Want to use this chunk to see if there is a correlation between number of occurances in each lake and their size. If there isn't a positive correlation then would it be more around tourist areas.
+```
+
