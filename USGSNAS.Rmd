@@ -55,6 +55,16 @@ ggplot(fil_dat, aes(x=dat$HUC.8.Number, y=dat$Year)) + geom_point(aes(col=dat$St
 counts <- table(fil_dat$HUC.8.Number)
 barplot(counts, main="HUC Distribution", 
    xlab="Number of Occurances in HUC")
+
+max(counts) #684 This occurs in Oneida Lake in NY
+which(table(fil_dat$HUC.8.Number) == 684) #4140202
+
+head(fil_dat[fil_dat$HUC.8.Number == 414020200,])
+
+
+table(fil_dat$HUC.8.Number)
+
+
 ```
 
 
@@ -145,5 +155,10 @@ map8 <- Borders + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=Ontar
 
 ```{r}
 #Want to use this chunk to see if there is a correlation between number of occurances in each lake and their size. If there isn't a positive correlation then would it be more around tourist areas.
+ 
+ # https://www.britannica.com/place/Great-Lakes
+ 
+ #Superior, Michigan, Huron, Erie, Ontario
+ size_of_lake <- c()
 ```
 
