@@ -154,11 +154,25 @@ map8 <- Borders + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=Ontar
 
 
 ```{r}
-#Want to use this chunk to see if there is a correlation between number of occurances in each lake and their size. If there isn't a positive correlation then would it be more around tourist areas.
+#Want to use this chunk to see if there is a correlation between number of occurances in each lake and their size. Linear Regression Analysis. If there isn't a positive correlation then would it be more around tourist areas? or more populated with boating areas. 
  
  # https://www.britannica.com/place/Great-Lakes
  
- #Superior, Michigan, Huron, Erie, Ontario
- size_of_lake <- c()
+ #Superior, Michigan, Huron, Erie, Ontario sizes in square miles
+ size_of_lake <- c(31700, 22300, 23000, 9910, 7340)
+ 
+ 
+ sup_counts <-table(Superior$HUC.8.Number)
+ sup_counts <- sup_counts[2,]
+ mich_counts <-table(Michigan$HUC.8.Number)
+ huron_counts <-table(Huron$HUC.8.Number)
+ erie_counts <-table(Erie$HUC.8.Number)
+ ont_counts <-table(Ontario$HUC.8.Number)
+ zm_occurances <-c(sup_counts, mich_counts, huron_counts, erie_counts, ont_counts)
+ 
+ sizeDat <- data.frame(size_of_lake, zm_occurances)
+ 
+ model <- lm(sziezm_occurances)
+ 
 ```
 
