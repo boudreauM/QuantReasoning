@@ -56,6 +56,8 @@ counts <- table(fil_dat$HUC.8.Number)
 barplot(counts, main="HUC Distribution", 
    xlab="Number of Occurances in HUC")
 
+# Look into the other large points from the HUC Distribution
+
 max(counts) #684 This occurs in Oneida Lake in NY
 which(table(fil_dat$HUC.8.Number) == 684) #4140202
 
@@ -162,17 +164,177 @@ map8 <- Borders + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=Ontar
  size_of_lake <- c(31700, 22300, 23000, 9910, 7340)
  
  
- sup_counts <-table(Superior$HUC.8.Number)
- sup_counts <- sup_counts[2,]
- mich_counts <-table(Michigan$HUC.8.Number)
- huron_counts <-table(Huron$HUC.8.Number)
- erie_counts <-table(Erie$HUC.8.Number)
- ont_counts <-table(Ontario$HUC.8.Number)
- zm_occurances <-c(sup_counts, mich_counts, huron_counts, erie_counts, ont_counts)
+ sup_counts <-nrow(table(Superior$HUC.8.Number))
+ mich_counts <-nrow(table(Michigan$HUC.8.Number))
+ huron_counts <-nrow(table(Huron$HUC.8.Number))
+ erie_counts <- nrow(table(Erie$HUC.8.Number))
+ ont_counts <- nrow(table(Ontario$HUC.8.Number))
+ zm_HUC_occurances <-c(sup_counts, mich_counts, huron_counts, erie_counts, ont_counts)
  
- sizeDat <- data.frame(size_of_lake, zm_occurances)
+ sizeDat <- data.frame(size_of_lake, zm_HUC_occurances)
+
  
- model <- lm(sziezm_occurances)
+ HUCmodel <- lm(zm_HUC_occurances~size_of_lake, sizeDat)
+ summary(HUCmodel)
+ 
+# Call:
+#lm(formula = zm_occurances ~ size_of_lake, data = sizeDat)
+
+#Residuals:
+#     1      2      3      4      5 
+#-6.915 14.778 -4.348  6.011 -9.526 
+
+#Coefficients:
+#              Estimate Std. Error t value Pr(>|t|)
+#(Intercept)  1.020e+01  1.214e+01    0.84    0.462
+#size_of_lake 1.802e-04  5.811e-04    0.31    0.777
+ 
+ # The p-value associated with the coefficient is not a significant value, and therefore not statistically significant. From the model, its states that a unit increase in the size of the lake leads to a 0.0001802 increase in the HUC Occurances.  
+
+#Residual standard error: 11.72 on 3 degrees of freedom
+#Multiple R-squared:  0.03104,	Adjusted R-squared:  -0.2919 
+#F-statistic: 0.0961 on 1 and 3 DF,  p-value: 0.7768
+ 
+ 
+ ggplot(sizeDat, aes(x=size_of_lake, y=zm_HUC_occurances)) + geom_point() + geom_smooth(method = "lm") + labs(title="Size of Lake vs. HUC Occurances", subtitle="From USGS Zebra Mussel Dataset", y="HUC Occurances", x="Size of Lake") 
+ 
+ # There is a confidence band around the regression line as well. 
+
  
 ```
 
+This chunk will change the years that the HUC data is being looked at in 8 year chunks
+```{r}
+
+ SuperiorFirst8 <- dat %>% 
+   filter(Latitude>=46 & Latitude<=50) %>% 
+   filter(Longitude<=-84.5 & Longitude>=-92) %>% 
+   filter(Year <=1999 & Year >= 1991)
+ 
+ SuperiorSecond8 <- dat %>% 
+   filter(Latitude>=46 & Latitude<=50) %>% 
+   filter(Longitude<=-84.5 & Longitude>=-92) %>% 
+   filter(Year <= 2008 & Year >= 2000)
+
+ SuperiorThird8 <- dat %>% 
+   filter(Latitude>=46 & Latitude<=50) %>% 
+   filter(Longitude<=-84.5 & Longitude>=-92) %>% 
+   filter(Year <= 2015 & Year >= 2009)
+ 
+MichiganFirst8 <- dat %>% 
+  filter(Latitude>=42.5 & Latitude<=46) %>% 
+  filter(Longitude<=-84.5 & Longitude>=-88) %>% 
+   filter(Year <=1999 & Year >= 1991)
+
+MichiganSecond8 <- dat %>% 
+  filter(Latitude>=42.5 & Latitude<=46) %>% 
+  filter(Longitude<=-84.5 & Longitude>=-88) %>% 
+   filter(Year <=2008 & Year >= 2000)
+
+MichiganThird8 <- dat %>% 
+  filter(Latitude>=42.5 & Latitude<=46) %>% 
+  filter(Longitude<=-84.5 & Longitude>=-88) %>% 
+   filter(Year <=2015 & Year >= 2009)
+
+HuronFirst8 <- dat %>% 
+  filter(Latitude>=43 & Latitude<=46) %>% 
+  filter(Longitude<=-81.5 & Longitude>=-84) %>% 
+   filter(Year <=1999 & Year >= 1991)
+
+HuronSecond8 <- dat %>% 
+  filter(Latitude>=43 & Latitude<=46) %>% 
+  filter(Longitude<=-81.5 & Longitude>=-84) %>% 
+   filter(Year <=2008 & Year >= 2000)
+
+HuronThird8 <- dat %>% 
+  filter(Latitude>=43 & Latitude<=46) %>% 
+  filter(Longitude<=-81.5 & Longitude>=-84) %>% 
+   filter(Year <=2015 & Year >= 2009)
+
+ErieFirst8 <- dat %>% 
+  filter(Latitude>=41.5 & Latitude<=43) %>%
+  filter(Longitude<=-79 & Longitude>=-84) %>% 
+   filter(Year <=1999 & Year >= 1991)
+
+ErieSecond8 <- dat %>% 
+  filter(Latitude>=41.5 & Latitude<=43) %>%
+  filter(Longitude<=-79 & Longitude>=-84) %>% 
+   filter(Year <=2008 & Year >= 2000)
+
+ErieThird8 <- dat %>% 
+  filter(Latitude>=41.5 & Latitude<=43) %>%
+  filter(Longitude<=-79 & Longitude>=-84) %>% 
+   filter(Year <=2015 & Year >= 2009)
+
+OntarioFirst8 <- dat %>% 
+  filter(Latitude>=43.25 & Latitude<=44) %>% 
+  filter(Longitude<=-78 & Longitude>=-80) %>% 
+   filter(Year <=1999 & Year >= 1991)
+
+OntarioSecond8 <- dat %>% 
+  filter(Latitude>=43.25 & Latitude<=44) %>% 
+  filter(Longitude<=-78 & Longitude>=-80) %>% 
+   filter(Year <=2008 & Year >= 2000)
+
+OntarioThird8 <- dat %>% 
+  filter(Latitude>=43.25 & Latitude<=44) %>% 
+  filter(Longitude<=-78 & Longitude>=-80) %>% 
+   filter(Year <=2015 & Year >= 2009)
+
+```
+
+```{r}
+  ## This is the first 8 years of the data (1991-1999)
+
+sup_counts_F8 <-nrow(table(SuperiorFirst8$HUC.8.Number))
+ mich_counts_F8 <-nrow(table(MichiganFirst8$HUC.8.Number))
+ huron_counts_F8<-nrow(table(HuronFirst8$HUC.8.Number))
+ erie_counts_F8 <- nrow(table(ErieFirst8$HUC.8.Number))
+ ont_counts_F8 <- nrow(table(OntarioFirst8$HUC.8.Number))
+ zm_HUC_occurances_F8 <-c(sup_counts_F8, mich_counts_F8, huron_counts_F8, erie_counts_F8, ont_counts_F8)
+
+  
+ sizeDatF8 <- data.frame(size_of_lake, zm_HUC_occurances_F8)
+
+ 
+ ggplot(sizeDatF8, aes(x=size_of_lake, y=zm_HUC_occurances_F8)) + geom_point() + geom_smooth(method = "lm") + labs(title="Size of Lake vs. HUC Occurances", subtitle="From USGS Zebra Mussel Dataset For First 8 Years", y="HUC Occurances", x="Size of Lake") 
+ 
+```
+
+
+```{r}
+  ## This is the second 8 years of the data (2000-2008)
+
+sup_counts_S8 <-nrow(table(SuperiorSecond8$HUC.8.Number))
+ mich_counts_S8 <-nrow(table(MichiganSecond8$HUC.8.Number))
+ huron_counts_S8<-nrow(table(HuronSecond8$HUC.8.Number))
+ erie_counts_S8 <- nrow(table(ErieSecond8$HUC.8.Number))
+ ont_counts_S8 <- nrow(table(OntarioSecond8$HUC.8.Number))
+ zm_HUC_occurances_S8 <-c(sup_counts_S8, mich_counts_S8, huron_counts_S8, erie_counts_S8, ont_counts_S8)
+
+  
+ sizeDatS8 <- data.frame(size_of_lake, zm_HUC_occurances_S8)
+
+ 
+ ggplot(sizeDatS8, aes(x=size_of_lake, y=zm_HUC_occurances_S8)) + geom_point() + geom_smooth(method = "lm") + labs(title="Size of Lake vs. HUC Occurances", subtitle="From USGS Zebra Mussel Dataset For Second 8 Years", y="HUC Occurances", x="Size of Lake") 
+ 
+```
+
+
+```{r}
+  ## This is the third 8 years of the data (2009-2015)
+
+sup_counts_T8 <-nrow(table(SuperiorThird8$HUC.8.Number))
+ mich_counts_T8 <-nrow(table(MichiganThird8$HUC.8.Number))
+ huron_counts_T8<-nrow(table(HuronThird8$HUC.8.Number))
+ erie_counts_T8 <- nrow(table(ErieThird8$HUC.8.Number))
+ ont_counts_T8 <- nrow(table(OntarioThird8$HUC.8.Number))
+ zm_HUC_occurances_T8 <-c(sup_counts_T8, mich_counts_T8, huron_counts_T8, erie_counts_T8, ont_counts_T8)
+
+  
+ sizeDatT8 <- data.frame(size_of_lake, zm_HUC_occurances_T8)
+
+ 
+ ggplot(sizeDatT8, aes(x=size_of_lake, y=zm_HUC_occurances_T8)) + geom_point() + geom_smooth(method = "lm") + labs(title="Size of Lake vs. HUC Occurances", subtitle="From USGS Zebra Mussel Dataset For Third 8 Years", y="HUC Occurances", x="Size of Lake") 
+ 
+```
