@@ -340,16 +340,4 @@ sup_counts_T8 <-nrow(table(SuperiorThird8$HUC.8.Number))
 ```
 
 
-```{r}
-#number of specimens observed as a function of year...not working yet
-> length(which(dat$Year=="2007"))
-[1] 174
-> length(which(dat$Year=="2019"))
-[1] 44
 
-
-
-dat %>%
-  group_by(Year) %>%
-
- ````
