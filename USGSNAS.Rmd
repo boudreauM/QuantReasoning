@@ -338,3 +338,18 @@ sup_counts_T8 <-nrow(table(SuperiorThird8$HUC.8.Number))
  ggplot(sizeDatT8, aes(x=size_of_lake, y=zm_HUC_occurances_T8)) + geom_point() + geom_smooth(method = "lm") + labs(title="Size of Lake vs. HUC Occurances", subtitle="From USGS Zebra Mussel Dataset For Third 8 Years", y="HUC Occurances", x="Size of Lake") 
  
 ```
+
+
+```{r}
+#number of specimens observed as a function of year...not working yet
+> length(which(dat$Year=="2007"))
+[1] 174
+> length(which(dat$Year=="2019"))
+[1] 44
+
+
+
+dat %>%
+  group_by(Year) %>%
+
+ ````
