@@ -345,5 +345,29 @@ sup_counts_T8 <-nrow(table(SuperiorThird8$HUC.8.Number))
  
 ```
 
+```{r}
+##  Temperature data
+library(readxl)
+lakes_92_18 <- read_excel("great lakes avg temp 1992-2018.xlsx")
+every_lake <- read_excel("every lake 1995-2018.xlsx")
 
+#This graph shows the average temperatures for the lakes over the course of the year
+#IT'S A GOOD GRAPH
 
+plot(lakes_92_18$Day,lakes_92_18$Superior, col= "blue", xlim= c(1,365), ylim= c(0,30), 
+     xlab= "Day of the Year", ylab= "Temperature (Celsius)", main= "Average Temp 1992-2018")
+points(lakes_92_18$Day,lakes_92_18$Michigan, col= "orange")
+points(lakes_92_18$Day,lakes_92_18$Huron, col="green" )
+points(lakes_92_18$Day,lakes_92_18$Erie, col= "red")
+points(lakes_92_18$Day,lakes_92_18$Ontario, col= "purple")
+legend(0, 27, legend=c("Superior","Michigan","Huron","Erie","Ontario"), 
+       col=c("blue","orange","green","red","purple"), lty=1, title= "Lake")
+
+#This shows the consistency of the temperature of Lake Michigan over the years
+Mich_Temp <- every_lake%>%
+  select(Year,Day,Mich.)
+  plot(Temp)
+
+ggplot(Temp, aes(x= Year, y= Mich.))+geom_point()
+
+```
