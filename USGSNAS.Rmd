@@ -319,7 +319,27 @@ sup_counts_F8 <-nrow(table(SuperiorFirst8$HUC.8.Number))
  ont_counts_F8 <- nrow(table(OntarioFirst8$HUC.8.Number))
  zm_HUC_occurances_F8 <-c(sup_counts_F8, mich_counts_F8, huron_counts_F8, erie_counts_F8, ont_counts_F8)
 
-  
+ HUCmodelSizeF8 <- lm(zm_HUC_occurances_F8~size_of_lake, sizeDat)
+ summary(HUCmodelSizeF8)
+ sizeCoefF8 <- coef(HUCmodelSizeF8)[2]
+#  
+# Call:
+# lm(formula = zm_HUC_occurances_F8 ~ size_of_lake, data = sizeDat)
+# 
+# Residuals:
+#        1        2        3        4        5 
+# -5.83035  9.09380 -0.04949  2.62999 -5.84395 
+# 
+# Coefficients:
+#               Estimate Std. Error t value Pr(>|t|)
+# (Intercept)  5.3414746  7.5144357   0.711    0.528
+# size_of_lake 0.0002047  0.0003596   0.569    0.609
+# 
+# Residual standard error: 7.252 on 3 degrees of freedom
+# Multiple R-squared:  0.09748,	Adjusted R-squared:  -0.2034 
+# F-statistic: 0.324 on 1 and 3 DF,  p-value: 0.609
+
+ 
  sizeDatF8 <- data.frame(size_of_lake, zm_HUC_occurances_F8)
 
  
@@ -327,7 +347,7 @@ sup_counts_F8 <-nrow(table(SuperiorFirst8$HUC.8.Number))
  
 ```
 
-The p-value associated with the coefficient from the data in the range of 1991-1999 is not a significant value, and therefore not statistically significant. From the model, its states that a unit increase in the size of the lake leads to a `r sizeCoef` increase in the HUC Occurances between the years of 1991-1999. Therefore, there is not a significant relationship between the HUC Occurances, and the size of each Great Lake. The plot also depicts the trend line with the slope of `r sizeCoef` and there are confidences bands around the trend line also. This is a small data set with only five data points though, given there are only five Great Lakes. 
+The p-value associated with the coefficient from the data in the range of 1991-1999 is not a significant value, and therefore not statistically significant. From the model, its states that a unit increase in the size of the lake leads to a `r sizeCoefF8` increase in the HUC Occurances between the years of 1991-1999. Therefore, there is not a significant relationship between the HUC Occurances, and the size of each Great Lake during that time frame. The plot also depicts the trend line with the slope of `r sizeCoefF8` and there are confidences bands around the trend line also. 
 
 ```{r regressSecond8, echo = FALSE}
   ## This is the second 8 years of the data (2000-2008)
@@ -339,7 +359,10 @@ sup_counts_S8 <-nrow(table(SuperiorSecond8$HUC.8.Number))
  ont_counts_S8 <- nrow(table(OntarioSecond8$HUC.8.Number))
  zm_HUC_occurances_S8 <-c(sup_counts_S8, mich_counts_S8, huron_counts_S8, erie_counts_S8, ont_counts_S8)
 
-  
+ HUCmodelSizeS8 <- lm(zm_HUC_occurances_S8~size_of_lake, sizeDat)
+ summary(HUCmodelSizeS8)
+ sizeCoefS8 <- coef(HUCmodelSizeS8)[2]
+ 
  sizeDatS8 <- data.frame(size_of_lake, zm_HUC_occurances_S8)
 
  
@@ -347,6 +370,7 @@ sup_counts_S8 <-nrow(table(SuperiorSecond8$HUC.8.Number))
  
 ```
 
+The p-value associated with the coefficient from the data in the range of 1991-1999 is not a significant value, and therefore not statistically significant. From the model, its states that a unit increase in the size of the lake leads to a `r sizeCoefF8` increase in the HUC Occurances between the years of 1991-1999. Therefore, there is not a significant relationship between the HUC Occurances, and the size of each Great Lake during that time frame. The plot also depicts the trend line with the slope of `r sizeCoefF8` and there are confidences bands around the trend line also. 
 
 ```{r regressThird8, echo = FALSE}
   ## This is the third 8 years of the data (2009-2015)
