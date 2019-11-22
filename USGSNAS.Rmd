@@ -1,8 +1,8 @@
 ---
-title: "USGS_NAS"
+title: "USGS NAS"
 author: "Mariah Boudreau, Kerria Burns, Amanda Jones"
 date: "11/1/2019"
-output: pdf_document
+output: pdf_document 
 ---
 The source is the United States Geological Survey (USGS) Nonindigenous Aquatic 
 Species (NAS) data set. It is a collection of zebra mussel sightings across the United States. 
@@ -38,10 +38,11 @@ Ambient temperature, seston concentration, and mussel size frequency are three f
 dat <- read.csv("NAS-Data-Download.csv")
 library(dplyr)
 library(ggplot2)
+
 ```
 
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, eval=FALSE}
 
 # Checking to unique HUC ID Numbers
 as.data.frame(table(dat$HUC.8.Number))
@@ -49,22 +50,23 @@ as.data.frame(table(dat$HUC.8.Number))
 # That means there are 350 different locations for this data
 ```
 
-This chunk will be to filter the unnecessary parts of the data
-```{r}
+
+```{r, echo = FALSE}
+# This chunk will be to filter the unnecessary parts of the data
 fil_dat <- select(dat, Specimen.Number, Species.ID, Group, Family, Scientific.Name, 
-                  Common.Name, Latitude, Longitude, Source, Accuracy, Drainage.Name, 
+                  Common.Name, Latitude, Longitude, Source, Accuracy, Drainage.Name,
                   HUC.8.Number, Year, Month, Day, Status)
 
 ```
 
-
-
-```{r}
+#Initial Visualization
+The graph below is one way in which the data set from the USGS zebra mussel data can be visualized. The horizontal axis represents the HUC Number and it is plotted again the state in which that HUC resides. The color of the point exhibits the time when the data was collected. There appears to be an even spread of years throughout the plot given by the various color gradients. 
+```{r, echo = FALSE}
 # Just looking at some different ways to visualize and understand the data
-ggplot(fil_dat, aes(x=dat$HUC.8.Number, y=dat$State)) + geom_point(aes(col=dat$Year), size=3) +labs(title="HUC Number vs. State", subtitle="From USGS Zebra Mussel Dataset", y="State", x="HUC Number")
+ggplot(fil_dat, aes(x=dat$HUC.8.Number, y=dat$State)) + geom_point(aes(col=dat$Year), size=3) +labs(title="HUC Number vs. State", subtitle="From USGS Zebra Mussel Dataset", y="State", x="HUC Number", col = "Years") 
 
 
-ggplot(fil_dat, aes(x=dat$HUC.8.Number, y=dat$Year)) + geom_point(aes(col=dat$State), size=3) +labs(title="HUC Number vs. Year", subtitle="From USGS Zebra Mussel Dataset", y="Year", x="HUC Number")
+# ggplot(fil_dat, aes(x=dat$HUC.8.Number, y=dat$Year)) + geom_point(aes(col=dat$State), size=3) +labs(title="HUC Number vs. Year", subtitle="From USGS Zebra Mussel Dataset", y="Year", x="HUC Number")
 
 
 counts <- table(fil_dat$HUC.8.Number)
@@ -73,21 +75,21 @@ barplot(counts, main="HUC Distribution",
 
 # Look into the other large points from the HUC Distribution
 
-max(counts) #684 This occurs in Oneida Lake in NY
-which(table(fil_dat$HUC.8.Number) == 684) #4140202
-
-head(fil_dat[fil_dat$HUC.8.Number == 414020200,])
-
-
-table(fil_dat$HUC.8.Number)
+# max(counts) #684 This occurs in Oneida Lake in NY
+# which(table(fil_dat$HUC.8.Number) == 684) #4140202
+# 
+# head(fil_dat[fil_dat$HUC.8.Number == 414020200,])
+# 
+# 
+# table(fil_dat$HUC.8.Number)
 
 
 ```
 
 
 #Maps and graph by state and year
-```{r}
-dat <- read.csv("C:/Users/kmb057/Documents/FundamentalsQuantReasoning/QuantReasoning/NAS-Data-Download.csv")
+```{r, echo=FALSE}
+#dat <- read.csv("C:/Users/kmb057/Documents/FundamentalsQuantReasoning/QuantReasoning/NAS-Data-Download.csv")
 
 #remove 0,0 coordinate row
 dat <- dat[-5810,]
@@ -118,7 +120,7 @@ map2 <- states + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=latest
 established_collected_post_2000 <- filter(dat[dat$Year>=2000,]) %>%
   filter(Status=="established"|Status=="collected")
 
-established_collected_post_2000$Year <- sort(established_post_2000$Year,decreasing=F)
+established_collected_post_2000$Year <- sort(established_collected_post_2000$Year,decreasing=F)
 
 map3 <- states + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=established_collected_post_2000,alpha=0.2)+transition_states(established_collected_post_2000$Year)+shadow_mark()
 
@@ -168,9 +170,8 @@ map8 <- Borders + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=Ontar
   geom_point(aes(x=Longitude,y=Latitude,color="purple"),data=Ontario,alpha=0.2)
 ```
 
-
-
-```{r}
+#Linear Regression of Size of Lake and HUC Counts
+```{r SizeLR, echo=FALSE}
 #Want to use this chunk to see if there is a correlation between number of occurances in each lake and their size. Linear Regression Analysis. If there isn't a positive correlation then would it be more around tourist areas? or more populated with boating areas. 
  
  # https://www.britannica.com/place/Great-Lakes
@@ -189,8 +190,10 @@ map8 <- Borders + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=Ontar
  sizeDat <- data.frame(size_of_lake, zm_HUC_occurances)
 
  
- HUCmodel <- lm(zm_HUC_occurances~size_of_lake, sizeDat)
- summary(HUCmodel)
+ HUCmodelSize <- lm(zm_HUC_occurances~size_of_lake, sizeDat)
+ summary(HUCmodelSize)
+ sizeCoef <- coef(HUCmodelSize)[2]
+ 
  
 # Call:
 #lm(formula = zm_occurances ~ size_of_lake, data = sizeDat)
@@ -217,10 +220,14 @@ map8 <- Borders + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=Ontar
 
  
 ```
+A linear regression analysis was conducted after collecting data on the size of the lake and filtering out the data to only look at the HUC zebra mussel occurances in the areas of the Great Lakes. The reason for this analysis is to understand if there is a relationship between the size of the lake in water volume, and the number of occurances on certain HUCs. 
 
-This chunk will change the years that the HUC data is being looked at in 8 year chunks
-```{r}
+Once the analysis was conducted, the p-value associated with the coefficient is not a significant value, and therefore not statistically significant. From the model, its states that a unit increase in the size of the lake leads to a `r sizeCoef` increase in the HUC Occurances. Therefore, there is not a significant relationship between the HUC Occurances, and the size of each Great Lake. The plot also depicts the trend line with the slope of `r sizeCoef` and there are confidences bands around the trend line also. This is a small data set with only five data points though, given there are only five Great Lakes. 
 
+
+
+```{r separateSizeCode, echo = FALSE}
+# This chunk will change the years that the HUC data is being looked at in 8 year chunks
  SuperiorFirst8 <- dat %>% 
    filter(Latitude>=46 & Latitude<=50) %>% 
    filter(Longitude<=-84.5 & Longitude>=-92) %>% 
@@ -298,7 +305,11 @@ OntarioThird8 <- dat %>%
 
 ```
 
-```{r}
+To conduct further analysis, that data used used the time span of the years 1991-2015 and the data was then split into three different different time period. The time periods are [1991-1999], [2000-2008], and [2009-2015]. Each time period has a linear regression analysis associated with it and the details for each will be described along with a graph of each trend line. 
+
+
+
+```{r regressFirst8, echo = FALSE}
   ## This is the first 8 years of the data (1991-1999)
 
 sup_counts_F8 <-nrow(table(SuperiorFirst8$HUC.8.Number))
@@ -316,8 +327,9 @@ sup_counts_F8 <-nrow(table(SuperiorFirst8$HUC.8.Number))
  
 ```
 
+The p-value associated with the coefficient from the data in the range of 1991-1999 is not a significant value, and therefore not statistically significant. From the model, its states that a unit increase in the size of the lake leads to a `r sizeCoef` increase in the HUC Occurances between the years of 1991-1999. Therefore, there is not a significant relationship between the HUC Occurances, and the size of each Great Lake. The plot also depicts the trend line with the slope of `r sizeCoef` and there are confidences bands around the trend line also. This is a small data set with only five data points though, given there are only five Great Lakes. 
 
-```{r}
+```{r regressSecond8, echo = FALSE}
   ## This is the second 8 years of the data (2000-2008)
 
 sup_counts_S8 <-nrow(table(SuperiorSecond8$HUC.8.Number))
@@ -336,7 +348,7 @@ sup_counts_S8 <-nrow(table(SuperiorSecond8$HUC.8.Number))
 ```
 
 
-```{r}
+```{r regressThird8, echo = FALSE}
   ## This is the third 8 years of the data (2009-2015)
 
 sup_counts_T8 <-nrow(table(SuperiorThird8$HUC.8.Number))
@@ -354,7 +366,7 @@ sup_counts_T8 <-nrow(table(SuperiorThird8$HUC.8.Number))
  
 ```
 
-```{r}
+```{r Temp, echo = FALSE}
 ##  Temperature data
 library(readxl)
 lakes_92_18 <- read_excel("great lakes avg temp 1992-2018.xlsx")
@@ -372,11 +384,12 @@ points(lakes_92_18$Day,lakes_92_18$Ontario, col= "purple")
 legend(0, 27, legend=c("Superior","Michigan","Huron","Erie","Ontario"), 
        col=c("blue","orange","green","red","purple"), lty=1, title= "Lake")
 
-#This shows the consistency of the temperature of Lake Michigan over the years
-Mich_Temp <- every_lake%>%
-  select(Year,Day,Mich.)
-  plot(Temp)
-
-ggplot(Temp, aes(x= Year, y= Mich.))+geom_point()
+# #This shows the consistency of the temperature of Lake Michigan over the years
+# #Mich_Temp <- every_lake%>%
+# #  select(Year,Day,Mich.)
+# 
+#   plot(Temp)
+# 
+# ggplot(Temp, aes(x= Year, y= Mich.))+geom_point()
 
 ```
