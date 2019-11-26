@@ -363,6 +363,22 @@ sup_counts_S8 <-nrow(table(SuperiorSecond8$HUC.8.Number))
  summary(HUCmodelSizeS8)
  sizeCoefS8 <- coef(HUCmodelSizeS8)[2]
  
+#  Call:
+# lm(formula = zm_HUC_occurances_S8 ~ size_of_lake, data = sizeDat)
+# 
+# Residuals:
+#       1       2       3       4       5 
+# -1.8982  1.7347  0.7621  3.2509 -3.8495 
+# 
+# Coefficients:
+#                Estimate Std. Error t value Pr(>|t|)
+# (Intercept)   6.136e+00  3.415e+00   1.797    0.170
+# size_of_lake -3.905e-05  1.634e-04  -0.239    0.827
+# 
+# Residual standard error: 3.295 on 3 degrees of freedom
+# Multiple R-squared:  0.01868,	Adjusted R-squared:  -0.3084 
+# F-statistic: 0.0571 on 1 and 3 DF,  p-value: 0.8265
+ 
  sizeDatS8 <- data.frame(size_of_lake, zm_HUC_occurances_S8)
 
  
@@ -370,7 +386,7 @@ sup_counts_S8 <-nrow(table(SuperiorSecond8$HUC.8.Number))
  
 ```
 
-The p-value associated with the coefficient from the data in the range of 1991-1999 is not a significant value, and therefore not statistically significant. From the model, its states that a unit increase in the size of the lake leads to a `r sizeCoefF8` increase in the HUC Occurances between the years of 1991-1999. Therefore, there is not a significant relationship between the HUC Occurances, and the size of each Great Lake during that time frame. The plot also depicts the trend line with the slope of `r sizeCoefF8` and there are confidences bands around the trend line also. 
+The p-value associated with the coefficient from the data in the range of 2000-2008 is not a significant value, and therefore not statistically significant. From the model, its states that a unit increase in the size of the lake leads to a `r sizeCoefS8` increase in the HUC Occurances between the years of 2000-2008. Therefore, there is not a significant relationship between the HUC Occurances, and the size of each Great Lake during that time frame. The plot also depicts the trend line with the slope of `r sizeCoefS8` and there are confidences bands around the trend line also. This relationship is also negative compared the the first 8 years, which had a positive relationship. Even though neither of the slopes were significant, there could be a change occurring in those time periods that need to be explored. 
 
 ```{r regressThird8, echo = FALSE}
   ## This is the third 8 years of the data (2009-2015)
@@ -382,13 +398,35 @@ sup_counts_T8 <-nrow(table(SuperiorThird8$HUC.8.Number))
  ont_counts_T8 <- nrow(table(OntarioThird8$HUC.8.Number))
  zm_HUC_occurances_T8 <-c(sup_counts_T8, mich_counts_T8, huron_counts_T8, erie_counts_T8, ont_counts_T8)
 
-  
+ HUCmodelSizeT8 <- lm(zm_HUC_occurances_T8~size_of_lake, sizeDat)
+ summary(HUCmodelSizeT8)
+ sizeCoefT8 <- coef(HUCmodelSizeT8)[2]
  sizeDatT8 <- data.frame(size_of_lake, zm_HUC_occurances_T8)
+# 
+#  Call:
+# lm(formula = zm_HUC_occurances_T8 ~ size_of_lake, data = sizeDat)
+# 
+# Residuals:
+#       1       2       3       4       5 
+#  0.2118  1.4717 -2.4732  4.4961 -3.7063 
+# 
+# Coefficients:
+#                Estimate Std. Error t value Pr(>|t|)
+# (Intercept)   4.284e+00  3.890e+00   1.101    0.351
+# size_of_lake -7.874e-05  1.862e-04  -0.423    0.701
+# 
+# Residual standard error: 3.754 on 3 degrees of freedom
+# Multiple R-squared:  0.05628,	Adjusted R-squared:  -0.2583 
+# F-statistic: 0.1789 on 1 and 3 DF,  p-value: 0.7008
 
+ 
  
  ggplot(sizeDatT8, aes(x=size_of_lake, y=zm_HUC_occurances_T8)) + geom_point() + geom_smooth(method = "lm") + labs(title="Size of Lake vs. HUC Occurances", subtitle="From USGS Zebra Mussel Dataset For Third 8 Years", y="HUC Occurances", x="Size of Lake") 
  
 ```
+
+The p-value associated with the coefficient from the data in the range of 2009-2015 is not a significant value, and therefore not statistically significant. From the model, its states that a unit increase in the size of the lake leads to a `r sizeCoefT8` increase in the HUC Occurances between the years of 2009-2015. Therefore, there is not a significant relationship between the HUC Occurances, and the size of each Great Lake during that time frame. The plot also depicts the trend line with the slope of `r sizeCoefT8` and there are confidences bands around the trend line also. This coefficient is negative and larger than the previous 8 year period. However, the overall regression analyis shows a positive non significant trend, which insinuates that the first 8 year period has a large affect on the regression analysis since it is the only positive trend out of the three time periods. 
+
 
 ```{r Temp, echo = FALSE}
 ##  Temperature data
