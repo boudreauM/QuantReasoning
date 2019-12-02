@@ -222,6 +222,20 @@ map8 <- Borders + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=Ontar
  
  # There is a confidence band around the regression line as well. 
 
+#number of specimens found in each lake`
+sup_occ <- unique(Superior$Specimen.Number)
+mich_occ <- unique(Michigan$Specimen.Number)
+huron_occ <- unique(Huron$Specimen.Number)
+erie_occ <- unique(Erie$Specimen.Number)
+ont_occ <- unique(Ontario$Specimen.Number)
+zm_occ <- c(sup_occ, mich_occ, huron_occ, erie_occ, ont_occ)
+
+SupOcc <- nrow(table(sup_occ))
+MichOcc <- nrow(table(mich_occ))
+HurOcc <- nrow(table(huron_occ))
+EriOcc <- nrow(table(erie_occ))
+OntOcc <- nrow(table(ont_occ))
+zm_occ <- c(SupOcc, MichOcc, HurOcc, EriOcc, OntOcc)
  
 ```
 A linear regression analysis was conducted after collecting data on the size of the lake and filtering out the data to only look at the HUC zebra mussel occurrences in the areas of the Great Lakes. The reason for this analysis is to understand if there is a relationship between the size of the lake in water volume, and the number of occurrences on certain HUCs. 
