@@ -1,7 +1,7 @@
 ---
 title: "USGS NAS"
 author: "Mariah Boudreau, Kerria Burns, Amanda Jones"
-date: "11/1/2019"
+date: "12/5/2019"
 output: pdf_document 
 ---
 The source is the United States Geological Survey (USGS) Nonindigenous Aquatic 
@@ -214,15 +214,15 @@ map8 <- Borders + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=Ontar
 #F-statistic: 0.0961 on 1 and 3 DF,  p-value: 0.7768
  
  
- ggplot(sizeDat, aes(x=size_of_lake, y=zm_HUC_occurances)) + geom_point() + geom_smooth(method = "lm") + labs(title="Size of Lake vs. HUC Occurances", subtitle="From USGS Zebra Mussel Dataset", y="HUC Occurances", x="Size of Lake") 
+ ggplot(sizeDat, aes(x=size_of_lake, y=zm_HUC_occurances)) + geom_point() + geom_smooth(method = "lm") + labs(title="Size of Lake vs. HUC Occurrences", subtitle="From USGS Zebra Mussel Dataset", y="HUC Occurrences", x="Size of Lake") 
  
  # There is a confidence band around the regression line as well. 
 
  
 ```
-A linear regression analysis was conducted after collecting data on the size of the lake and filtering out the data to only look at the HUC zebra mussel occurances in the areas of the Great Lakes. The reason for this analysis is to understand if there is a relationship between the size of the lake in water volume, and the number of occurances on certain HUCs. 
+A linear regression analysis was conducted after collecting data on the size of the lake and filtering out the data to only look at the HUC zebra mussel occurrences in the areas of the Great Lakes. The reason for this analysis is to understand if there is a relationship between the size of the lake in water volume, and the number of occurrences on certain HUCs. 
 
-Once the analysis was conducted, the p-value associated with the coefficient is not a significant value, and therefore not statistically significant. From the model, its states that a unit increase in the size of the lake leads to a `r sizeCoef` increase in the HUC Occurances. Therefore, there is not a significant relationship between the HUC Occurances, and the size of each Great Lake. The plot also depicts the trend line with the slope of `r sizeCoef` and there are confidences bands around the trend line also. This is a small data set with only five data points though, given there are only five Great Lakes. 
+Once the analysis was conducted, the p-value associated with the coefficient is not a significant value, and therefore not statistically significant. From the model, its states that a unit increase in the size of the lake leads to a `r sizeCoef` increase in the HUC Occurrences. Therefore, there is not a significant relationship between the HUC Occurrences, and the size of each Great Lake. The plot also depicts the trend line with the slope of `r sizeCoef` and there are confidences bands around the trend line also. This is a small data set with only five data points though, given there are only five Great Lakes. 
 
 
 
@@ -343,11 +343,11 @@ sup_counts_F8 <-nrow(table(SuperiorFirst8$HUC.8.Number))
  sizeDatF8 <- data.frame(size_of_lake, zm_HUC_occurances_F8)
 
  
- ggplot(sizeDatF8, aes(x=size_of_lake, y=zm_HUC_occurances_F8)) + geom_point() + geom_smooth(method = "lm") + labs(title="Size of Lake vs. HUC Occurances", subtitle="From USGS Zebra Mussel Dataset For First 8 Years", y="HUC Occurances", x="Size of Lake") 
+ ggplot(sizeDatF8, aes(x=size_of_lake, y=zm_HUC_occurances_F8)) + geom_point() + geom_smooth(method = "lm") + labs(title="Size of Lake vs. HUC Occurrences", subtitle="From USGS Zebra Mussel Dataset For First 8 Years", y="HUC Occurrences", x="Size of Lake") 
  
 ```
 
-The p-value associated with the coefficient from the data in the range of 1991-1999 is not a significant value, and therefore not statistically significant. From the model, its states that a unit increase in the size of the lake leads to a `r sizeCoefF8` increase in the HUC Occurances between the years of 1991-1999. Therefore, there is not a significant relationship between the HUC Occurances, and the size of each Great Lake during that time frame. The plot also depicts the trend line with the slope of `r sizeCoefF8` and there are confidences bands around the trend line also. 
+The p-value associated with the coefficient from the data in the range of 1991-1999 is not a significant value, and therefore not statistically significant. From the model, its states that a unit increase in the size of the lake leads to a `r sizeCoefF8` increase in the HUC Occurrences between the years of 1991-1999. Therefore, there is not a significant relationship between the HUC Occurrences, and the size of each Great Lake during that time frame. The plot also depicts the trend line with the slope of `r sizeCoefF8` and there are confidences bands around the trend line also. 
 
 ```{r regressSecond8, echo = FALSE}
   ## This is the second 8 years of the data (2000-2008)
@@ -382,11 +382,11 @@ sup_counts_S8 <-nrow(table(SuperiorSecond8$HUC.8.Number))
  sizeDatS8 <- data.frame(size_of_lake, zm_HUC_occurances_S8)
 
  
- ggplot(sizeDatS8, aes(x=size_of_lake, y=zm_HUC_occurances_S8)) + geom_point() + geom_smooth(method = "lm") + labs(title="Size of Lake vs. HUC Occurances", subtitle="From USGS Zebra Mussel Dataset For Second 8 Years", y="HUC Occurances", x="Size of Lake") 
+ ggplot(sizeDatS8, aes(x=size_of_lake, y=zm_HUC_occurances_S8)) + geom_point() + geom_smooth(method = "lm") + labs(title="Size of Lake vs. HUC Occurrences", subtitle="From USGS Zebra Mussel Dataset For Second 8 Years", y="HUC Occurrences", x="Size of Lake") 
  
 ```
 
-The p-value associated with the coefficient from the data in the range of 2000-2008 is not a significant value, and therefore not statistically significant. From the model, its states that a unit increase in the size of the lake leads to a `r sizeCoefS8` increase in the HUC Occurances between the years of 2000-2008. Therefore, there is not a significant relationship between the HUC Occurances, and the size of each Great Lake during that time frame. The plot also depicts the trend line with the slope of `r sizeCoefS8` and there are confidences bands around the trend line also. This relationship is also negative compared the the first 8 years, which had a positive relationship. Even though neither of the slopes were significant, there could be a change occurring in those time periods that need to be explored. 
+The p-value associated with the coefficient from the data in the range of 2000-2008 is not a significant value, and therefore not statistically significant. From the model, its states that a unit increase in the size of the lake leads to a `r sizeCoefS8` increase in the HUC Occurrences between the years of 2000-2008. Therefore, there is not a significant relationship between the HUC Occurrences, and the size of each Great Lake during that time frame. The plot also depicts the trend line with the slope of `r sizeCoefS8` and there are confidences bands around the trend line also. This relationship is also negative compared the the first 8 years, which had a positive relationship. Even though neither of the slopes were significant, there could be a change occurring in those time periods that need to be explored. 
 
 ```{r regressThird8, echo = FALSE}
   ## This is the third 8 years of the data (2009-2015)
@@ -421,11 +421,11 @@ sup_counts_T8 <-nrow(table(SuperiorThird8$HUC.8.Number))
 
  
  
- ggplot(sizeDatT8, aes(x=size_of_lake, y=zm_HUC_occurances_T8)) + geom_point() + geom_smooth(method = "lm") + labs(title="Size of Lake vs. HUC Occurances", subtitle="From USGS Zebra Mussel Dataset For Third 8 Years", y="HUC Occurances", x="Size of Lake") 
+ ggplot(sizeDatT8, aes(x=size_of_lake, y=zm_HUC_occurances_T8)) + geom_point() + geom_smooth(method = "lm") + labs(title="Size of Lake vs. HUC Occurrences", subtitle="From USGS Zebra Mussel Dataset For Third 8 Years", y="HUC Occurrences", x="Size of Lake") 
  
 ```
 
-The p-value associated with the coefficient from the data in the range of 2009-2015 is not a significant value, and therefore not statistically significant. From the model, its states that a unit increase in the size of the lake leads to a `r sizeCoefT8` increase in the HUC Occurances between the years of 2009-2015. Therefore, there is not a significant relationship between the HUC Occurances, and the size of each Great Lake during that time frame. The plot also depicts the trend line with the slope of `r sizeCoefT8` and there are confidences bands around the trend line also. This coefficient is negative and larger than the previous 8 year period. However, the overall regression analyis shows a positive non significant trend, which insinuates that the first 8 year period has a large affect on the regression analysis since it is the only positive trend out of the three time periods. 
+The p-value associated with the coefficient from the data in the range of 2009-2015 is not a significant value, and therefore not statistically significant. From the model, its states that a unit increase in the size of the lake leads to a `r sizeCoefT8` increase in the HUC Occurrences between the years of 2009-2015. Therefore, there is not a significant relationship between the HUC Occurrences, and the size of each Great Lake during that time frame. The plot also depicts the trend line with the slope of `r sizeCoefT8` and there are confidences bands around the trend line also. This coefficient is negative and larger than the previous 8 year period. However, the overall regression analyis shows a positive non significant trend, which insinuates that the first 8 year period has a large affect on the regression analysis since it is the only positive trend out of the three time periods. 
 
 
 ```{r Temp, echo = FALSE}
@@ -455,3 +455,51 @@ legend(0, 27, legend=c("Superior","Michigan","Huron","Erie","Ontario"),
 # ggplot(Temp, aes(x= Year, y= Mich.))+geom_point()
 
 ```
+
+```{r TempLR, echo = FALSE}
+
+
+superiorAvgTemp <- sum(lakes_92_18$Superior)/366
+michiganAvgTemp <- sum(lakes_92_18$Michigan)/366
+huronAvgTemp <- sum(lakes_92_18$Huron)/366
+erieAvgTemp <- sum(lakes_92_18$Erie)/366
+ontarioAvgTemp <- sum(lakes_92_18$Ontario)/366
+
+avgTemp <-c(superiorAvgTemp, michiganAvgTemp, huronAvgTemp,erieAvgTemp,ontarioAvgTemp)
+
+
+ sup_counts <-nrow(table(Superior$HUC.8.Number))
+ mich_counts <-nrow(table(Michigan$HUC.8.Number))
+ huron_counts <-nrow(table(Huron$HUC.8.Number))
+ erie_counts <- nrow(table(Erie$HUC.8.Number))
+ ont_counts <- nrow(table(Ontario$HUC.8.Number))
+ zm_HUC_occurances <-c(sup_counts, mich_counts, huron_counts, erie_counts,  
+                       ont_counts)
+ 
+ TempDat <- data.frame(avgTemp, zm_HUC_occurances)
+
+ 
+ HUCmodelTemp <- lm(zm_HUC_occurances~avgTemp, TempDat)
+ summary(HUCmodelTemp)
+ 
+#  Call:
+# lm(formula = zm_HUC_occurances ~ avgTemp, data = TempDat)
+# 
+# Residuals:
+#        1        2        3        4        5 
+#  -0.6765  14.9544  -2.9716   1.5067 -12.8131 
+# 
+# Coefficients:
+#             Estimate Std. Error t value Pr(>|t|)
+# (Intercept)    0.867     29.363    0.03    0.978
+# avgTemp        1.388      3.150    0.44    0.689
+# 
+# Residual standard error: 11.54 on 3 degrees of freedom
+# Multiple R-squared:  0.06075,	Adjusted R-squared:  -0.2523 
+# F-statistic: 0.194 on 1 and 3 DF,  p-value: 0.6894
+
+ 
+ ggplot(sizeDatT8, aes(x=avgTemp, y=zm_HUC_occurances_T8)) + geom_point() + geom_smooth(method = "lm") + labs(title="Temperature of Lake vs. HUC Occurrences", subtitle="From USGS Zebra Mussel Dataset", y="HUC Occurrences", x="Temperature of Lake") 
+
+```
+
