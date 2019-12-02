@@ -2,7 +2,9 @@
 title: "USGS NAS"
 author: "Mariah Boudreau, Kerria Burns, Amanda Jones"
 date: "12/5/2019"
-output: pdf_document 
+output:
+  html_document:
+    df_print: paged
 ---
 The source is the United States Geological Survey (USGS) Nonindigenous Aquatic 
 Species (NAS) data set. It is a collection of zebra mussel sightings across the United States. 
@@ -168,6 +170,8 @@ map8 <- Borders + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=Ontar
   geom_point(aes(x=Longitude,y=Latitude,color="green"),data=Huron,alpha=0.2)+
   geom_point(aes(x=Longitude,y=Latitude,color="yellow"),data=Erie,alpha=0.2)+
   geom_point(aes(x=Longitude,y=Latitude,color="purple"),data=Ontario,alpha=0.2)
+ 
+ GreatLakes
 ```
 
 #Linear Regression of Size of Lake and HUC Counts
@@ -445,16 +449,24 @@ points(lakes_92_18$Day,lakes_92_18$Erie, col= "red")
 points(lakes_92_18$Day,lakes_92_18$Ontario, col= "purple")
 legend(0, 27, legend=c("Superior","Michigan","Huron","Erie","Ontario"), 
        col=c("blue","orange","green","red","purple"), lty=1, title= "Lake")
-
 # #This shows the consistency of the temperature of Lake Michigan over the years
-# #Mich_Temp <- every_lake%>%
-# #  select(Year,Day,Mich.)
+Mich_Temp <- every_lake%>%
+select(Year,Day,Mich.)
 # 
 #   plot(Temp)
 # 
-# ggplot(Temp, aes(x= Year, y= Mich.))+geom_point()
+ggplot(Temp, aes(x= Year, y= Mich.))+geom_point()
+
+
+#This shows the temperature of Lake Superior 
+sup_temp <-  every_lake%>%
+  select(Year,Day,Sup.)
+ggplot(sup_temp, aes(x= Year, y= Sup.))+geom_point()
+
 
 ```
+
+The average temperature of each lake throughout the year shows that Lake Erie get sthe warmest and Lake Superior is the coldest. When specifically looked at, Lake Superior has a high temperature that is about 5 degrees lower than the high temperature of Lake Michigan. 
 
 ```{r TempLR, echo = FALSE}
 
