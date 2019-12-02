@@ -469,7 +469,7 @@ select(Year,Day,Mich.)
 # 
 #   plot(Temp)
 # 
-ggplot(Temp, aes(x= Year, y= Mich.))+geom_point()
+ggplot(Mich_Temp, aes(x= Year, y= Mich.))+geom_point()
 
 
 #This shows the temperature of Lake Superior 
@@ -480,7 +480,7 @@ ggplot(sup_temp, aes(x= Year, y= Sup.))+geom_point()
 
 ```
 
-The average temperature of each lake throughout the year shows that Lake Erie get sthe warmest and Lake Superior is the coldest. When specifically looked at, Lake Superior has a high temperature that is about 5 degrees lower than the high temperature of Lake Michigan. 
+The average temperature of each lake throughout the year shows that Lake Erie get sthe warmest and Lake Superior is the coldest. When specifically looked at, Lake Superior has a high temperature that is about 5 degrees lower than the high temperature of Lake Michigan. There is a lower density of zebra mussels in Lake Superior due to its lower temperatures and harsher conditions.  
 
 ```{r TempLR, echo = FALSE}
 
