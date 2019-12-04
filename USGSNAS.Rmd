@@ -173,6 +173,31 @@ map8 <- Borders + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=Ontar
  
  GreatLakes
 ```
+```{r}
+#number of specimens found in each lake`
+sup_occ <- unique(Superior$Specimen.Number)
+mich_occ <- unique(Michigan$Specimen.Number)
+huron_occ <- unique(Huron$Specimen.Number)
+erie_occ <- unique(Erie$Specimen.Number)
+ont_occ <- unique(Ontario$Specimen.Number)
+zm_occ <- c(sup_occ, mich_occ, huron_occ, erie_occ, ont_occ)
+
+SupOcc <- nrow(table(sup_occ))
+MichOcc <- nrow(table(mich_occ))
+HurOcc <- nrow(table(huron_occ))
+EriOcc <- nrow(table(erie_occ))
+OntOcc <- nrow(table(ont_occ))
+zm_occ <- c(SupOcc, MichOcc, HurOcc, EriOcc, OntOcc)
+```
+One occurrence indicates one collection effort--anywhere from one to thousands of zebra mussels could be included. Lake Michigan has the highest number of occurrences at 610, while Lake Superior has the least, at 36.
+```{r}
+
+CountYear <- lm(n~Year, Summarize_sightings_by_year_month)
+summary(CountYear)
+ggplot(Summarize_sightings_by_year_month, aes(x=Summarize_sightings_by_year_month$Year, y=Summarize_sightings_by_year_month$n)) + geom_point() + geom_smooth(method = "lm") + labs(title="Occurrences By Year", y="Count",x="Year")
+
+```
+There is no relationship between number of occurrences and year. Number of sightings does not increase or decrease as time goes on.
 
 #Linear Regression of Size of Lake and HUC Counts
 ```{r SizeLR, echo=FALSE}
