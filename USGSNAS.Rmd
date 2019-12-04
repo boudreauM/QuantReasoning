@@ -529,3 +529,31 @@ avgTemp <-c(superiorAvgTemp, michiganAvgTemp, huronAvgTemp,erieAvgTemp,ontarioAv
 
 ```
 
+Analysis to be done on this, not significant values here.
+
+```{r, echo=FALSE}
+ # Superior, Michigan, Huron, Erie, Ontario sizes in cubic miles
+volume_of_lake <- c(2900, 1180, 850, 116, 393)
+
+
+sup_counts <-nrow(table(Superior$HUC.8.Number))
+mich_counts <-nrow(table(Michigan$HUC.8.Number))
+huron_counts <-nrow(table(Huron$HUC.8.Number))
+erie_counts <- nrow(table(Erie$HUC.8.Number))
+ont_counts <- nrow(table(Ontario$HUC.8.Number))
+zm_HUC_occurances <-c(sup_counts, mich_counts, huron_counts, erie_counts, ont_counts)
+
+volumeDat <- data.frame(volume_of_lake, zm_HUC_occurances)
+
+
+HUCmodelVolume <- lm(zm_HUC_occurances~volume_of_lake, volumeDat)
+summary(HUCmodelVolume)
+
+
+
+
+ggplot(volumeDat, aes(x=volume_of_lake, y=zm_HUC_occurances)) + geom_point() + geom_smooth(method = "lm") + labs(title="Volume of Lake vs. HUC Occurrences", subtitle="From USGS Zebra Mussel Dataset", y="HUC Occurrences", x="Volume of Lake") 
+
+
+```
+
