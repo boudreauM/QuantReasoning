@@ -135,8 +135,8 @@ plot(Summarize_sightings_by_year_month$Year,Summarize_sightings_by_year_month$n)
 
 
 
-ggplot(Summarize_sightings_by_year_month, aes(fill=Summarize_sightings_by_year_month$State, y=Summarize_sightings_by_year_month$n, x=Summarize_sightings_by_year_month$Year)) + 
-  geom_bar(position="dodge", stat="identity")
+ggplot(Summarize_sightings_by_year_month, aes(fill=Summarize_sightings_by_year_month$State, y=Summarize_sightings_by_year_month$n, x=Summarize_sightings_by_year_month$Year)) +labs(x = "Year",y="Occurrences",colour="State") + geom_bar(position="dodge", stat="identity")+theme(legend.position = "none")
+
   
 #filter data for only Great Lakes lat and long
 BorderingGreatLakes <- c("New York","Pennsylvania","Ohio","Indiana","Michigan","Illinois","Wisconsin","Minnesota")
