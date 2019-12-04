@@ -6,19 +6,10 @@ output:
   html_document:
     df_print: paged
 ---
-The source is the United States Geological Survey (USGS) Nonindigenous Aquatic 
+The data source is the United States Geological Survey (USGS) Nonindigenous Aquatic 
 Species (NAS) data set. It is a collection of zebra mussel sightings across the United States. 
-Zebra mussels are an incredibly damaging invasive species in the continental US. They have 
-spread drastically over the past several decades, beginning in the Great Lakes.  Included is a 
-point map that represents the number of individuals by the color and size of the circle 
-superimposed on a map of the United States. Also included is an Excel spreadsheet including 
-species identification, latitude and longitude, phase of establishment, and date of sighting, among
-other information.
+Zebra mussels are an incredibly damaging invasive species in the continental US. 
  
-Figure 1
-Zebra mussel sightings represented by size and color of circle – darker and larger circle correspond to a greater number of individuals. Source: USGS NAS
-The map includes Hydraulic Unit Codes (HUC), a system derived by USGS to delimit subregions within the country. 
-
 An inquiry then could be to standardize each HUC by area to find the number of zebra mussels per unit area to determine at which locations the highest density occurs. Similarly, bins of degrees of latitude could be derived (to reduce the step of standardization and bypass the use of HUC altogether, a possible benefit of which would be that measurements of latitude might yield more climatically relevant data rather than political/economic divisions), to again determine the density of zebra mussels per unit (as yet to be defined). This could be combined with climatic information to determine which climate conditions favor the establishment and invasion of zebra mussels to the most severe extent. A time series could be constructed to see if there were certain time periods that showed more movement than others. The type of analysis could be done on a map similar to the one above to see the visual change as well. 
 
 Zebra mussels belong to the phylum Mollusca, the group bivalves (unique among them--the only species that attaches to a hard substrate), which are native to the Black, Caspian, and Azov seas (USGS NAS). They were first observed in areas nearby Indiana, Michigan, and Ohio in 1986 (USGS NAS). Zebra mussels likely originated in Europe, establishing a population in Lakes St. Clair and Erie when ships dispersed ballast water (Hebert et al. 1989). The influence of bivalves on ecosystems includes the following: removal of particles from the water column, reducing populations of consumers depending on these particles as food source, increasing populations that use bivalves or their waste products, and making available particles previously used by phytoplankton (Strayer et al. 1999). As a result, their introduction into the United States as a result of commercial trade has had cascading effects on ecosystems, affecting multiple trophic levels and altering the abiotic conditions of the water bodies in which they reside.
