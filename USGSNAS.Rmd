@@ -581,4 +581,16 @@ ggplot(volumeDat, aes(x=volume_of_lake, y=zm_HUC_occurances)) + geom_point() + g
 
 
 ```
+References
+Hebert, P. D. N., Mackie, G. L., & Muncaster, B. W. (1989). Ecological and Genetic Studies on Dreissena polymorpha ( Pallas ): A New Mollusc in the Great Lakes. Candian Journal of Fisheries and Aquatic Sciences. https://doi.org/10.1139/f89-202
+
+Macisaac, H. J. (2014). Potential Abiotic and Biotic Impacts of Zebra Mussels on the Inland Waters of North America Potential Abiotic and Biotic Impacts of Zebra Mussels on the, (March). https://doi.org/10.1093/icb/36.3.287
+
+Mackie, G. L. (2016). Biology of the exotic zebra mussel , Dreissena polymporph , in relation to native bivalves and its potential impact in Lake St . Clair, (July 1991). https://doi.org/10.1007/BF00024759
+
+Nichols, S. J. (1996). Variations in the Reproductive Cycle of Dreissena Polymorpha in Europe, Russia, and North America. American Zoologist, 36, 311–325.
+
+Strayer, D. L., Caraco, N. F., Cole, J. J., Findlay, S., & Pace, M. L. (1999). Transformation of Freshwater A case study of zebra mussels in the Hudson River. BioScience, 49(1).
+
+Wacker, E. A. (2003). Food quality controls reproduction of the zebra mussel ( Dreissena polymorpha ). Oecologia, 135, 332–338. https://doi.org/10.1007/s00442-003-1208-5
 
