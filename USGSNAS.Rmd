@@ -8,9 +8,7 @@ output:
 ---
 The data source is the United States Geological Survey (USGS) Nonindigenous Aquatic 
 Species (NAS) data set. It is a collection of zebra mussel sightings across the United States. 
-Zebra mussels are an incredibly damaging invasive species in the continental US. 
- 
-An inquiry then could be to standardize each HUC by area to find the number of zebra mussels per unit area to determine at which locations the highest density occurs. Similarly, bins of degrees of latitude could be derived (to reduce the step of standardization and bypass the use of HUC altogether, a possible benefit of which would be that measurements of latitude might yield more climatically relevant data rather than political/economic divisions), to again determine the density of zebra mussels per unit (as yet to be defined). This could be combined with climatic information to determine which climate conditions favor the establishment and invasion of zebra mussels to the most severe extent. A time series could be constructed to see if there were certain time periods that showed more movement than others. The type of analysis could be done on a map similar to the one above to see the visual change as well. 
+Zebra mussels are an incredibly damaging invasive species in the continental US.  
 
 Zebra mussels belong to the phylum Mollusca, the group bivalves (unique among them--the only species that attaches to a hard substrate), which are native to the Black, Caspian, and Azov seas (USGS NAS). They were first observed in areas nearby Indiana, Michigan, and Ohio in 1986 (USGS NAS). Zebra mussels likely originated in Europe, establishing a population in Lakes St. Clair and Erie when ships dispersed ballast water (Hebert et al. 1989). The influence of bivalves on ecosystems includes the following: removal of particles from the water column, reducing populations of consumers depending on these particles as food source, increasing populations that use bivalves or their waste products, and making available particles previously used by phytoplankton (Strayer et al. 1999). As a result, their introduction into the United States as a result of commercial trade has had cascading effects on ecosystems, affecting multiple trophic levels and altering the abiotic conditions of the water bodies in which they reside.
 	
@@ -116,10 +114,11 @@ established_collected_post_2000 <- filter(dat[dat$Year>=2000,]) %>%
 established_collected_post_2000$Year <- sort(established_collected_post_2000$Year,decreasing=F)
 
 map3 <- states + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=established_collected_post_2000,alpha=0.2)+transition_states(established_collected_post_2000$Year)+shadow_mark()
+```
+These maps demonstrate the spread of zebra mussels in increments of one year.
 
 
-
-
+```{r}
 #Plot number of zebra mussels sightings per year 
 Summarize_sightings_by_year_month <- dat %>% count(Year, Month,State)
 plot(Summarize_sightings_by_year_month$Year,Summarize_sightings_by_year_month$n)
@@ -127,8 +126,10 @@ plot(Summarize_sightings_by_year_month$Year,Summarize_sightings_by_year_month$n)
 
 
 ggplot(Summarize_sightings_by_year_month, aes(fill=Summarize_sightings_by_year_month$State, y=Summarize_sightings_by_year_month$n, x=Summarize_sightings_by_year_month$Year)) +labs(x = "Year",y="Occurrences",colour="State") + geom_bar(position="dodge", stat="identity")+theme(legend.position = "none")
-
-  
+```
+This graph demonstrates the number of occurrences by state, month, and year. The spread from state to state is observable.
+ 
+ ```{r}
 #filter data for only Great Lakes lat and long
 BorderingGreatLakes <- c("New York","Pennsylvania","Ohio","Indiana","Michigan","Illinois","Wisconsin","Minnesota")
 PlottingBorder <- map_data("state", region=BorderingGreatLakes)
@@ -164,6 +165,7 @@ map8 <- Borders + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=Ontar
  
  GreatLakes
 ```
+This map shows the occurrences for only the Great Lakes region. Notably, Lake Michigan has the most, and Lake Superior has the least.
 ```{r}
 #number of specimens found in each lake`
 sup_occ <- unique(Superior$Specimen.Number)
@@ -572,6 +574,11 @@ ggplot(volumeDat, aes(x=volume_of_lake, y=zm_HUC_occurances)) + geom_point() + g
 
 
 ```
+
+This analysis was mostly a descriptive visualization--where, and when, are zebra mussels found? Additional linear models demonstrate no significant relationship of zebra mussel occurrences to the size (area or volume) of the lake, or the time period.
+
+
+
 References
 Hebert, P. D. N., Mackie, G. L., & Muncaster, B. W. (1989). Ecological and Genetic Studies on Dreissena polymorpha ( Pallas ): A New Mollusc in the Great Lakes. Candian Journal of Fisheries and Aquatic Sciences. https://doi.org/10.1139/f89-202
 
