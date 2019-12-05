@@ -3,6 +3,7 @@ title: "USGS NAS"
 author: "Mariah Boudreau, Kerria Burns, Amanda Jones"
 date: "12/5/2019"
 output:
+  pdf_document: default
   html_document:
     df_print: paged
 ---
@@ -557,3 +558,16 @@ ggplot(volumeDat, aes(x=volume_of_lake, y=zm_HUC_occurances)) + geom_point() + g
 
 ```
 
+
+
+# Easton comments
+
+In general, you did a nice job of finding a dataset, learning about the system, and running some analyses. Most of my comments below have to deal with the presentation of the results and organization of the text. 
+
+Things to do for final draft:
+
+- In general the figures look nice, but they can be cleaned up with little things like the axes titles
+- Reorder the text at the beginning so it reads with a traditional introduction, methods, and results
+- add appropriate figure captions
+- include formatting to make R markdown output look nicer (e.g. section headers, remove chunk messages)
+- Have a short paragraph that summarizes and puts your results in context
