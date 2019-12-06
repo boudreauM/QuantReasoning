@@ -5,6 +5,7 @@ date: "12/5/2019"
 output:
   html_document:
     df_print: paged
+  pdf_document: default
 ---
 The source is the United States Geological Survey (USGS) Nonindigenous Aquatic 
 Species (NAS) data set. It is a collection of zebra mussel sightings across the United States. 
@@ -446,41 +447,6 @@ sup_counts_T8 <-nrow(table(SuperiorThird8$HUC.8.Number))
 The p-value associated with the coefficient from the data in the range of 2009-2015 is not a significant value, and therefore not statistically significant. From the model, its states that a unit increase in the size of the lake leads to a `r sizeCoefT8` increase in the HUC Occurrences between the years of 2009-2015. Therefore, there is not a significant relationship between the HUC Occurrences, and the size of each Great Lake during that time frame. The plot also depicts the trend line with the slope of `r sizeCoefT8` and there are confidences bands around the trend line also. This coefficient is negative and larger than the previous 8 year period. However, the overall regression analyis shows a positive non significant trend, which insinuates that the first 8 year period has a large affect on the regression analysis since it is the only positive trend out of the three time periods. 
 
 
-```{r Temp, echo = FALSE}
-##  Temperature data
-library(readxl)
-lakes_92_18 <- read_excel("great lakes avg temp 1992-2018.xlsx")
-every_lake <- read_excel("every lake 1995-2018.xlsx")
-
-#This graph shows the average temperatures for the lakes over the course of the year
-#IT'S A GOOD GRAPH
-
-plot(lakes_92_18$Day,lakes_92_18$Superior, col= "blue", xlim= c(1,365), ylim= c(0,30), 
-     xlab= "Day of the Year", ylab= "Temperature (Celsius)", main= "Average Temp 1992-2018")
-points(lakes_92_18$Day,lakes_92_18$Michigan, col= "orange")
-points(lakes_92_18$Day,lakes_92_18$Huron, col="green" )
-points(lakes_92_18$Day,lakes_92_18$Erie, col= "red")
-points(lakes_92_18$Day,lakes_92_18$Ontario, col= "purple")
-legend(0, 27, legend=c("Superior","Michigan","Huron","Erie","Ontario"), 
-       col=c("blue","orange","green","red","purple"), lty=1, title= "Lake")
-# #This shows the consistency of the temperature of Lake Michigan over the years
-Mich_Temp <- every_lake%>%
-select(Year,Day,Mich.)
-# 
-#   plot(Temp)
-# 
-ggplot(Mich_Temp, aes(x= Year, y= Mich.))+geom_point()
-
-
-#This shows the temperature of Lake Superior 
-sup_temp <-  every_lake%>%
-  select(Year,Day,Sup.)
-ggplot(sup_temp, aes(x= Year, y= Sup.))+geom_point()
-
-
-```
-
-The average temperature of each lake throughout the year shows that Lake Erie get sthe warmest and Lake Superior is the coldest. When specifically looked at, Lake Superior has a high temperature that is about 5 degrees lower than the high temperature of Lake Michigan. There is a lower density of zebra mussels in Lake Superior due to its lower temperatures and harsher conditions.  
 
 ```{r TempLR, echo = FALSE}
 
@@ -557,3 +523,146 @@ ggplot(volumeDat, aes(x=volume_of_lake, y=zm_HUC_occurances)) + geom_point() + g
 
 ```
 
+
+```{r Temp, echo = FALSE}
+##  Temperature data
+library(readxl)
+library(dplyr)
+library(ggplot2)
+lakes_92_18 <- read_excel("great lakes avg temp 1992-2018.xlsx")
+every_lake <- read_excel("every lake 1995-2018.xlsx")
+
+#This graph shows the average temperatures for the lakes over the course of the year
+
+plot(lakes_92_18$Day,lakes_92_18$Superior, col= "blue", xlim= c(1,365), ylim= c(0,30), 
+     xlab= "Day of the Year", ylab= "Temperature (Celsius)", main= "Average Temp 1992-2018")
+points(lakes_92_18$Day,lakes_92_18$Michigan, col= "orange")
+points(lakes_92_18$Day,lakes_92_18$Huron, col="green" )
+points(lakes_92_18$Day,lakes_92_18$Erie, col= "red")
+points(lakes_92_18$Day,lakes_92_18$Ontario, col= "purple")
+legend(0, 27, legend=c("Superior","Michigan","Huron","Erie","Ontario"), 
+       col=c("blue","orange","green","red","purple"), lty=1, title= "Lake")
+
+#This shows the number of sightings per lake per year
+library(stringr)
+Sup_by_year <- dat %>%
+  select(Locality,Year) %>%
+  filter(str_detect(Locality,"Superior"))%>%
+  count(Year)
+plot(Sup_by_year, ylab= "Number of Sightings", main= "Sightings per Year", col= "blue", pch=19, ylim= c(0,100))
+Mich_by_year <- dat %>%
+  select(Locality,Year) %>%
+  filter(str_detect(Locality,"Michigan"))%>%
+  count(Year)
+points(Mich_by_year, col= "orange", pch= 19)
+Huron_by_year <- dat %>%
+  select(Locality,Year) %>%
+  filter(str_detect(Locality,"Huron"))%>%
+  count(Year)
+points(Huron_by_year, col= "green", pch=19)
+Erie_by_Year <- dat %>%
+  select(Locality,Year) %>%
+  filter(str_detect(Locality,"Erie"))%>%
+  count(Year)
+points(Erie_by_Year,  col="red", pch=19)
+Ont_by_Year <- dat %>%
+  select(Locality,Year) %>%
+  filter(str_detect(Locality,"Ontario"))%>%
+  count(Year)
+points(Ont_by_Year, col= "purple", pch= 19)
+legend(2007, 100, legend=c("Superior","Michigan","Huron","Erie","Ontario"), 
+       col=c("blue","orange","green","red","purple"), lty=1, title= "Lake")
+
+#Find high temp of each year of each lake
+sup_high_temp <- every_lake%>%
+  select(Year,Sup.)%>%
+  group_by(Year)%>%
+  filter(Sup.==max(Sup.))
+plot(sup_high_temp, col= "blue", pch=19, ylim= c(10,30), ylab= "High Temp (Celsius)", 
+     main= "High Temperature per Year")
+Mich_high_temp <- every_lake%>%
+  select(Year,Mich.)%>%
+  group_by(Year)%>%
+  filter(Mich.==max(Mich.))
+points(Mich_high_temp, col="orange", pch=19)
+Huron_high_temp <- every_lake%>%
+  select(Year,Huron)%>%
+  group_by(Year)%>%
+  filter(Huron==max(Huron))
+points(Huron_high_temp, col="green", pch=19)
+Erie_high_temp <- every_lake%>%
+  select(Year,Erie)%>%
+  group_by(Year)%>%
+  filter(Erie==max(Erie))
+points(Erie_high_temp,col = "red", pch=19)
+Ont_high_temp <-every_lake%>%
+  select(Year,Ont.)%>%
+  group_by(Year)%>%
+  filter(Ont.==max(Ont.))
+points(Ont_high_temp,col="purple", pch=19)
+
+#Correlation between high temp and number of sightings
+lake_temp_counts <- read_excel("lake high temp and counts.xlsx")
+
+plot(lake_temp_counts$`Ont. Temp`,lake_temp_counts$`Ont. Count`, xlab= "High Temperature (Celsius)", 
+     ylab= "Number of Sightings", main= "Temperature vs Number of Sightings", 
+     col= "purple", pch=19, xlim= c(14,27), ylim= c(0,60))
+points(lake_temp_counts$`Erie Temp.`,lake_temp_counts$`Erie Count`, col= "red", pch=19)
+points(lake_temp_counts$`Huron Temp.`,lake_temp_counts$`Huron Count`, col= "green", pch=19)
+points(lake_temp_counts$`Mich. Temp`, lake_temp_counts$`Mich. Count`, col= "orange", pch=19)
+points(lake_temp_counts$`Sup. Temp`, lake_temp_counts$`Sup. Count`, col= "blue", pch=19)
+abline(lm(lake_temp_counts$`Ont. Temp` ~ lake_temp_counts$`Ont. Count`), col= "purple")
+abline(lm(lake_temp_counts$`Erie Temp.`~ lake_temp_counts$`Erie Count`), col= "red")
+abline(lm(lake_temp_counts$`Huron Temp.`~lake_temp_counts$`Huron Count`), col= "green")
+abline(lm(lake_temp_counts$`Mich. Temp`~lake_temp_counts$`Mich. Count`), col="orange")
+abline(lm(lake_temp_counts$`Sup. Temp`~lake_temp_counts$`Sup. Count`), col= "blue")
+legend(14, 60, legend=c("Superior","Michigan","Huron","Erie","Ontario"), 
+       col=c("blue","orange","green","red","purple"), lty=1, title= "Lake")
+
+#Gives R squared, p values, other statistics
+summary(lm(lake_temp_counts$`Ont. Temp` ~ lake_temp_counts$`Ont. Count`))
+summary(lm(lake_temp_counts$`Erie Temp.`~ lake_temp_counts$`Erie Count`))
+summary(lm(lake_temp_counts$`Huron Temp.`~lake_temp_counts$`Huron Count`))      
+summary(lm(lake_temp_counts$`Mich. Temp`~lake_temp_counts$`Mich. Count`))
+summary(lm(lake_temp_counts$`Sup. Temp`~lake_temp_counts$`Sup. Count`))
+
+```
+The average temperature of each lake throughout the year shows that Lake Erie get sthe warmest and Lake Superior is the coldest. The number of sightings per lake per year was compared with the high temperature of each lake for the years 1995-2018. Since the temperature data begins with 1995, there could not be a comparison including sighting data for any year prior to 1995. There are no significant correlaitons between the high temperature of the lake and the number of sightings that occurred during any given year. Therefore, it can be concluded that temperature is likely not a driving factor of zebra mussel spread or sighting collection. 
+```{r Bias, echo=FALSE}
+#Looking at sampling efforts per month
+
+Sup_by_month <- dat %>%
+  select(Locality,Month) %>%
+  filter(str_detect(Locality,"Superior"))%>%
+  count(Month)
+plot(Sup_by_month, ylab= "Number of Sightings", main= "Sightings per Month", col= "blue", pch=19, ylim= c(0,100))
+
+Mich_by_month <- dat %>%
+  select(Locality,Month) %>%
+  filter(str_detect(Locality,"Michigan"))%>%
+  count(Month)
+points(Mich_by_month, col= "orange", pch= 19)
+
+Huron_by_month <- dat %>%
+  select(Locality,Month) %>%
+  filter(str_detect(Locality,"Huron"))%>%
+  count(Month)
+points(Huron_by_month, col= "green", pch=19)
+
+Erie_by_month <- dat %>%
+  select(Locality,Month) %>%
+  filter(str_detect(Locality,"Erie"))%>%
+  count(Month)
+points(Erie_by_month,  col="red", pch=19)
+
+Ont_by_month <- dat %>%
+  select(Locality,Month) %>%
+  filter(str_detect(Locality,"Ontario"))%>%
+  count(Month)
+points(Ont_by_month, col= "purple", pch= 19)
+
+legend(1, 100, legend=c("Superior","Michigan","Huron","Erie","Ontario"), 
+       col=c("blue","orange","green","red","purple"), lty=1, title= "Lake")
+
+```
+There are more sightings during the summer months (approx. July-October). This is likely due to the fact that most sampling is done during the summer when the lakes are not frozen. Therefore, there is a significant bias for what time of year there are the most sightings of zerba mussels.
