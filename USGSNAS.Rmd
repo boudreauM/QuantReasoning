@@ -132,7 +132,7 @@ ggplot(Summarize_sightings_by_year_month, aes(fill=Summarize_sightings_by_year_m
 ###Figure 3
 This graph demonstrates the number of occurrences by state, month, and year. The spread from state to state is observable.
  
- ```{r}
+ ```{r,echo=FALSE}
 #filter data for only Great Lakes lat and long
 BorderingGreatLakes <- c("New York","Pennsylvania","Ohio","Indiana","Michigan","Illinois","Wisconsin","Minnesota")
 PlottingBorder <- map_data("state", region=BorderingGreatLakes)
@@ -168,8 +168,9 @@ map8 <- Borders + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=Ontar
  
  GreatLakes
 ```
+###Figure 4
 This map shows the occurrences for only the Great Lakes region. Notably, Lake Michigan has the most, and Lake Superior has the least.
-```{r}
+```{r,echo=FALSE}
 #number of specimens found in each lake`
 sup_occ <- unique(Superior$Specimen.Number)
 mich_occ <- unique(Michigan$Specimen.Number)
@@ -185,6 +186,7 @@ EriOcc <- nrow(table(erie_occ))
 OntOcc <- nrow(table(ont_occ))
 zm_occ <- c(SupOcc, MichOcc, HurOcc, EriOcc, OntOcc)
 ```
+#Results
 One occurrence indicates one collection effort--anywhere from one to thousands of zebra mussels could be included. Lake Michigan has the highest number of occurrences at 610, while Lake Superior has the least, at 36.
 ```{r}
 
@@ -193,9 +195,10 @@ summary(CountYear)
 ggplot(Summarize_sightings_by_year_month, aes(x=Summarize_sightings_by_year_month$Year, y=Summarize_sightings_by_year_month$n)) + geom_point() + geom_smooth(method = "lm") + labs(title="Occurrences By Year", y="Count",x="Year")
 
 ```
+###Figure 5
 There is no relationship between number of occurrences and year. Number of sightings does not increase or decrease as time goes on.
 
-#Linear Regression of Size of Lake and HUC Counts
+##Linear Regression of Size of Lake and HUC Counts
 ```{r SizeLR, echo=FALSE}
 #Want to use this chunk to see if there is a correlation between number of occurances in each lake and their size. Linear Regression Analysis. If there isn't a positive correlation then would it be more around tourist areas? or more populated with boating areas. 
  
@@ -259,6 +262,7 @@ OntOcc <- nrow(table(ont_occ))
 zm_occ <- c(SupOcc, MichOcc, HurOcc, EriOcc, OntOcc)
  
 ```
+###Figure 6
 A linear regression analysis was conducted after collecting data on the size of the lake and filtering out the data to only look at the HUC zebra mussel occurrences in the areas of the Great Lakes. The reason for this analysis is to understand if there is a relationship between the size of the lake in water volume, and the number of occurrences on certain HUCs. 
 
 Once the analysis was conducted, the p-value associated with the coefficient is not a significant value, and therefore not statistically significant. From the model, its states that a unit increase in the size of the lake leads to a `r sizeCoef` increase in the HUC Occurrences. Therefore, there is not a significant relationship between the HUC Occurrences, and the size of each Great Lake. The plot also depicts the trend line with the slope of `r sizeCoef` and there are confidences bands around the trend line also. This is a small data set with only five data points though, given there are only five Great Lakes. 
@@ -385,6 +389,8 @@ sup_counts_F8 <-nrow(table(SuperiorFirst8$HUC.8.Number))
  ggplot(sizeDatF8, aes(x=size_of_lake, y=zm_HUC_occurances_F8)) + geom_point() + geom_smooth(method = "lm") + labs(title="Size of Lake vs. HUC Occurrences", subtitle="From USGS Zebra Mussel Dataset For First 8 Years", y="HUC Occurrences", x="Size of Lake") 
  
 ```
+###Figure 6
+Number of HUC occurrences as a function of lake size for the first eight years.
 
 The p-value associated with the coefficient from the data in the range of 1991-1999 is not a significant value, and therefore not statistically significant. From the model, its states that a unit increase in the size of the lake leads to a `r sizeCoefF8` increase in the HUC Occurrences between the years of 1991-1999. Therefore, there is not a significant relationship between the HUC Occurrences, and the size of each Great Lake during that time frame. The plot also depicts the trend line with the slope of `r sizeCoefF8` and there are confidences bands around the trend line also. 
 
@@ -424,6 +430,8 @@ sup_counts_S8 <-nrow(table(SuperiorSecond8$HUC.8.Number))
  ggplot(sizeDatS8, aes(x=size_of_lake, y=zm_HUC_occurances_S8)) + geom_point() + geom_smooth(method = "lm") + labs(title="Size of Lake vs. HUC Occurrences", subtitle="From USGS Zebra Mussel Dataset For Second 8 Years", y="HUC Occurrences", x="Size of Lake") 
  
 ```
+###Figure 7
+Number of HUC occurrences as a function of lake size for the second eight years.
 
 The p-value associated with the coefficient from the data in the range of 2000-2008 is not a significant value, and therefore not statistically significant. From the model, its states that a unit increase in the size of the lake leads to a `r sizeCoefS8` increase in the HUC Occurrences between the years of 2000-2008. Therefore, there is not a significant relationship between the HUC Occurrences, and the size of each Great Lake during that time frame. The plot also depicts the trend line with the slope of `r sizeCoefS8` and there are confidences bands around the trend line also. This relationship is also negative compared the the first 8 years, which had a positive relationship. Even though neither of the slopes were significant, there could be a change occurring in those time periods that need to be explored. 
 
@@ -463,6 +471,8 @@ sup_counts_T8 <-nrow(table(SuperiorThird8$HUC.8.Number))
  ggplot(sizeDatT8, aes(x=size_of_lake, y=zm_HUC_occurances_T8)) + geom_point() + geom_smooth(method = "lm") + labs(title="Size of Lake vs. HUC Occurrences", subtitle="From USGS Zebra Mussel Dataset For Third 8 Years", y="HUC Occurrences", x="Size of Lake") 
  
 ```
+###Figure 8
+Number of HUC occurrences as a function of lake size for the third eight years.
 
 The p-value associated with the coefficient from the data in the range of 2009-2015 is not a significant value, and therefore not statistically significant. From the model, its states that a unit increase in the size of the lake leads to a `r sizeCoefT8` increase in the HUC Occurrences between the years of 2009-2015. Therefore, there is not a significant relationship between the HUC Occurrences, and the size of each Great Lake during that time frame. The plot also depicts the trend line with the slope of `r sizeCoefT8` and there are confidences bands around the trend line also. This coefficient is negative and larger than the previous 8 year period. However, the overall regression analyis shows a positive non significant trend, which insinuates that the first 8 year period has a large affect on the regression analysis since it is the only positive trend out of the three time periods. 
 
