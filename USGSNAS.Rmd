@@ -696,12 +696,11 @@ legend(1, 100, legend=c("Superior","Michigan","Huron","Erie","Ontario"),
        col=c("blue","orange","green","red","purple"), lty=1, title= "Lake")
 
 ```
-There are more sightings during the summer months (approx. July-October). This is likely due to the fact that most sampling is done during the summer when the lakes are not frozen. Therefore, there is a significant bias for what time of year there are the most sightings of zerba mussels.
-=======
 
 
 
-This analysis was mostly a descriptive visualization--where, and when, are zebra mussels found? Additional linear models demonstrate no significant relationship of zebra mussel occurrences to the size (area or volume) of the lake, or the time period.
+#Discussion
+This analysis was mostly a descriptive visualization--where, and when, are zebra mussels found? Additional linear models demonstrate no significant relationship of zebra mussel occurrences to the size (area or volume) of the lake, or the time period. There are more sightings during the summer months (approx. July-October). This is likely due to the fact that most sampling is done during the summer when the lakes are not frozen. Therefore, there is a significant bias for what time of year there are the most sightings of zerba mussels. In general, zebra mussel sightings do not appear correlated with either volume or surface area of lake, the timeframe (year) collected, or temperature. The only correlation is between the time of year and occurrences, and this is likely due to logistical sampling based limitations. Further analyses could be conducted on the relationship of zebra mussel occurrences to latitude, or a comparison with biotic characteristics such as the presence of another invasive species, quagga mussels. One question in this regard could be how long after introduction of quagga mussels zebra mussels persist before being outcompeted, since quagga mussels exist at much higher densities than zebra mussels. Projections under different temperature regimes based on global warming could also be carried out, though the analyses here demonstrate that temperatures found within this temperate biome is within the range tolerated by zebra mussels. However, zebra mussels may be affected by high temperatures in the southern United States, so predicted increasing temperatures may have an impact on populations in the future.
 
 
 # Easton comments
