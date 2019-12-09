@@ -8,9 +8,7 @@ output:
     df_print: paged
   pdf_document: default
 ---
-The data source is the United States Geological Survey (USGS) Nonindigenous Aquatic 
-Species (NAS) data set. It is a collection of zebra mussel sightings across the United States. 
-Zebra mussels are an incredibly damaging invasive species in the continental US.  
+#Introduction
 
 Zebra mussels belong to the phylum Mollusca, the group bivalves (unique among them--the only species that attaches to a hard substrate), which are native to the Black, Caspian, and Azov seas (USGS NAS). They were first observed in areas nearby Indiana, Michigan, and Ohio in 1986 (USGS NAS). Zebra mussels likely originated in Europe, establishing a population in Lakes St. Clair and Erie when ships dispersed ballast water (Hebert et al. 1989). The influence of bivalves on ecosystems includes the following: removal of particles from the water column, reducing populations of consumers depending on these particles as food source, increasing populations that use bivalves or their waste products, and making available particles previously used by phytoplankton (Strayer et al. 1999). As a result, their introduction into the United States as a result of commercial trade has had cascading effects on ecosystems, affecting multiple trophic levels and altering the abiotic conditions of the water bodies in which they reside.
 	
@@ -27,7 +25,7 @@ Ambient temperature, seston concentration, and mussel size frequency are three f
 
 
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, include=FALSE}
 dat <- read.csv("NAS-Data-Download.csv")
 library(dplyr)
 library(ggplot2)
@@ -52,13 +50,17 @@ fil_dat <- select(dat, Specimen.Number, Species.ID, Group, Family, Scientific.Na
 
 ```
 
-#Initial Visualization
-The graph below is one way in which the data set from the USGS zebra mussel data can be visualized. The horizontal axis represents the HUC Number and it is plotted again the state in which that HUC resides. The color of the point exhibits the time when the data was collected. There appears to be an even spread of years throughout the plot given by the various color gradients. 
+#Methods 
+
+##Initital Visualization
 ```{r, echo = FALSE}
 # Just looking at some different ways to visualize and understand the data
 ggplot(fil_dat, aes(x=dat$HUC.8.Number, y=dat$State)) + geom_point(aes(col=dat$Year), size=3) +labs(title="HUC Number vs. State", subtitle="From USGS Zebra Mussel Dataset", y="State", x="HUC Number", col = "Years") 
+```
+###Figure 1
+This graph is one way in which the data set from the USGS zebra mussel data can be visualized. The horizontal axis represents the HUC Number and it is plotted again the state in which that HUC resides. The color of the point exhibits the time when the data was collected. There appears to be an even spread of years throughout the plot given by the various color gradients. 
 
-
+```{r,echo=FALSE}
 # ggplot(fil_dat, aes(x=dat$HUC.8.Number, y=dat$Year)) + geom_point(aes(col=dat$State), size=3) +labs(title="HUC Number vs. Year", subtitle="From USGS Zebra Mussel Dataset", y="Year", x="HUC Number")
 
 
@@ -78,9 +80,10 @@ barplot(counts, main="HUC Distribution",
 
 
 ```
+###Figure 2
+Number of zebra mussel occurrences per Hydraulic Unit Code.
 
 
-#Maps and graph by state and year
 ```{r, echo=FALSE}
 #dat <- read.csv("C:/Users/kmb057/Documents/FundamentalsQuantReasoning/QuantReasoning/NAS-Data-Download.csv")
 
@@ -117,18 +120,16 @@ established_collected_post_2000$Year <- sort(established_collected_post_2000$Yea
 
 map3 <- states + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=established_collected_post_2000,alpha=0.2)+transition_states(established_collected_post_2000$Year)+shadow_mark()
 ```
-These maps demonstrate the spread of zebra mussels in increments of one year.
 
 
-```{r}
-#Plot number of zebra mussels sightings per year 
-Summarize_sightings_by_year_month <- dat %>% count(Year, Month,State)
-plot(Summarize_sightings_by_year_month$Year,Summarize_sightings_by_year_month$n)
+
+```{r,echo=FALSE}
 
 
 
 ggplot(Summarize_sightings_by_year_month, aes(fill=Summarize_sightings_by_year_month$State, y=Summarize_sightings_by_year_month$n, x=Summarize_sightings_by_year_month$Year)) +labs(x = "Year",y="Occurrences",colour="State") + geom_bar(position="dodge", stat="identity")+theme(legend.position = "none")
 ```
+###Figure 3
 This graph demonstrates the number of occurrences by state, month, and year. The spread from state to state is observable.
  
  ```{r}
