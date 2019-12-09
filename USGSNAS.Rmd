@@ -52,7 +52,7 @@ fil_dat <- select(dat, Specimen.Number, Species.ID, Group, Family, Scientific.Na
 
 #Methods 
 
-##Initital Visualization
+##Initial Visualization
 ```{r, echo = FALSE}
 # Just looking at some different ways to visualize and understand the data
 ggplot(fil_dat, aes(x=dat$HUC.8.Number, y=dat$State)) + geom_point(aes(col=dat$Year), size=3) +labs(title="HUC Number vs. State", subtitle="From USGS Zebra Mussel Dataset", y="State", x="HUC Number", col = "Years") 
@@ -126,7 +126,7 @@ map3 <- states + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=establ
 ```{r,echo=FALSE}
 
 
-
+Summarize_sightings_by_year_month <- dat %>% count(Year, Month,State)
 ggplot(Summarize_sightings_by_year_month, aes(fill=Summarize_sightings_by_year_month$State, y=Summarize_sightings_by_year_month$n, x=Summarize_sightings_by_year_month$Year)) +labs(x = "Year",y="Occurrences",colour="State") + geom_bar(position="dodge", stat="identity")+theme(legend.position = "none")
 ```
 ###Figure 3
