@@ -3,23 +3,12 @@ title: "USGS NAS"
 author: "Mariah Boudreau, Kerria Burns, Amanda Jones"
 date: "12/5/2019"
 output:
+  pdf_document: default
   html_document:
     df_print: paged
+  pdf_document: default
 ---
-The source is the United States Geological Survey (USGS) Nonindigenous Aquatic 
-Species (NAS) data set. It is a collection of zebra mussel sightings across the United States. 
-Zebra mussels are an incredibly damaging invasive species in the continental US. They have 
-spread drastically over the past several decades, beginning in the Great Lakes.  Included is a 
-point map that represents the number of individuals by the color and size of the circle 
-superimposed on a map of the United States. Also included is an Excel spreadsheet including 
-species identification, latitude and longitude, phase of establishment, and date of sighting, among
-other information.
- 
-Figure 1
-Zebra mussel sightings represented by size and color of circle – darker and larger circle correspond to a greater number of individuals. Source: USGS NAS
-The map includes Hydraulic Unit Codes (HUC), a system derived by USGS to delimit subregions within the country. 
-
-An inquiry then could be to standardize each HUC by area to find the number of zebra mussels per unit area to determine at which locations the highest density occurs. Similarly, bins of degrees of latitude could be derived (to reduce the step of standardization and bypass the use of HUC altogether, a possible benefit of which would be that measurements of latitude might yield more climatically relevant data rather than political/economic divisions), to again determine the density of zebra mussels per unit (as yet to be defined). This could be combined with climatic information to determine which climate conditions favor the establishment and invasion of zebra mussels to the most severe extent. A time series could be constructed to see if there were certain time periods that showed more movement than others. The type of analysis could be done on a map similar to the one above to see the visual change as well. 
+#Introduction
 
 Zebra mussels belong to the phylum Mollusca, the group bivalves (unique among them--the only species that attaches to a hard substrate), which are native to the Black, Caspian, and Azov seas (USGS NAS). They were first observed in areas nearby Indiana, Michigan, and Ohio in 1986 (USGS NAS). Zebra mussels likely originated in Europe, establishing a population in Lakes St. Clair and Erie when ships dispersed ballast water (Hebert et al. 1989). The influence of bivalves on ecosystems includes the following: removal of particles from the water column, reducing populations of consumers depending on these particles as food source, increasing populations that use bivalves or their waste products, and making available particles previously used by phytoplankton (Strayer et al. 1999). As a result, their introduction into the United States as a result of commercial trade has had cascading effects on ecosystems, affecting multiple trophic levels and altering the abiotic conditions of the water bodies in which they reside.
 	
@@ -36,7 +25,7 @@ Ambient temperature, seston concentration, and mussel size frequency are three f
 
 
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, include=FALSE}
 dat <- read.csv("NAS-Data-Download.csv")
 library(dplyr)
 library(ggplot2)
@@ -61,13 +50,17 @@ fil_dat <- select(dat, Specimen.Number, Species.ID, Group, Family, Scientific.Na
 
 ```
 
-#Initial Visualization
-The graph below is one way in which the data set from the USGS zebra mussel data can be visualized. The horizontal axis represents the HUC Number and it is plotted again the state in which that HUC resides. The color of the point exhibits the time when the data was collected. There appears to be an even spread of years throughout the plot given by the various color gradients. 
+#Methods 
+
+##Initial Visualization
 ```{r, echo = FALSE}
 # Just looking at some different ways to visualize and understand the data
 ggplot(fil_dat, aes(x=dat$HUC.8.Number, y=dat$State)) + geom_point(aes(col=dat$Year), size=3) +labs(title="HUC Number vs. State", subtitle="From USGS Zebra Mussel Dataset", y="State", x="HUC Number", col = "Years") 
+```
+###Figure 1
+This graph is one way in which the data set from the USGS zebra mussel data can be visualized. The horizontal axis represents the HUC Number and it is plotted again the state in which that HUC resides. The color of the point exhibits the time when the data was collected. There appears to be an even spread of years throughout the plot given by the various color gradients. 
 
-
+```{r,echo=FALSE}
 # ggplot(fil_dat, aes(x=dat$HUC.8.Number, y=dat$Year)) + geom_point(aes(col=dat$State), size=3) +labs(title="HUC Number vs. Year", subtitle="From USGS Zebra Mussel Dataset", y="Year", x="HUC Number")
 
 
@@ -87,9 +80,10 @@ barplot(counts, main="HUC Distribution",
 
 
 ```
+###Figure 2
+Number of zebra mussel occurrences per Hydraulic Unit Code.
 
 
-#Maps and graph by state and year
 ```{r, echo=FALSE}
 #dat <- read.csv("C:/Users/kmb057/Documents/FundamentalsQuantReasoning/QuantReasoning/NAS-Data-Download.csv")
 
@@ -125,19 +119,20 @@ established_collected_post_2000 <- filter(dat[dat$Year>=2000,]) %>%
 established_collected_post_2000$Year <- sort(established_collected_post_2000$Year,decreasing=F)
 
 map3 <- states + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=established_collected_post_2000,alpha=0.2)+transition_states(established_collected_post_2000$Year)+shadow_mark()
+```
 
 
 
+```{r,echo=FALSE}
 
-#Plot number of zebra mussels sightings per year 
+
 Summarize_sightings_by_year_month <- dat %>% count(Year, Month,State)
-plot(Summarize_sightings_by_year_month$Year,Summarize_sightings_by_year_month$n)
-
-
-
-ggplot(Summarize_sightings_by_year_month, aes(fill=Summarize_sightings_by_year_month$State, y=Summarize_sightings_by_year_month$n, x=Summarize_sightings_by_year_month$Year)) + 
-  geom_bar(position="dodge", stat="identity")
-  
+ggplot(Summarize_sightings_by_year_month, aes(fill=Summarize_sightings_by_year_month$State, y=Summarize_sightings_by_year_month$n, x=Summarize_sightings_by_year_month$Year)) +labs(x = "Year",y="Occurrences",colour="State") + geom_bar(position="dodge", stat="identity")+theme(legend.position = "none")
+```
+###Figure 3
+This graph demonstrates the number of occurrences by state, month, and year. The spread from state to state is observable.
+ 
+ ```{r,echo=FALSE}
 #filter data for only Great Lakes lat and long
 BorderingGreatLakes <- c("New York","Pennsylvania","Ohio","Indiana","Michigan","Illinois","Wisconsin","Minnesota")
 PlottingBorder <- map_data("state", region=BorderingGreatLakes)
@@ -173,8 +168,37 @@ map8 <- Borders + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=Ontar
  
  GreatLakes
 ```
+###Figure 4
+This map shows the occurrences for only the Great Lakes region. Notably, Lake Michigan has the most, and Lake Superior has the least.
+```{r,echo=FALSE}
+#number of specimens found in each lake`
+sup_occ <- unique(Superior$Specimen.Number)
+mich_occ <- unique(Michigan$Specimen.Number)
+huron_occ <- unique(Huron$Specimen.Number)
+erie_occ <- unique(Erie$Specimen.Number)
+ont_occ <- unique(Ontario$Specimen.Number)
+zm_occ <- c(sup_occ, mich_occ, huron_occ, erie_occ, ont_occ)
 
-#Linear Regression of Size of Lake and HUC Counts
+SupOcc <- nrow(table(sup_occ))
+MichOcc <- nrow(table(mich_occ))
+HurOcc <- nrow(table(huron_occ))
+EriOcc <- nrow(table(erie_occ))
+OntOcc <- nrow(table(ont_occ))
+zm_occ <- c(SupOcc, MichOcc, HurOcc, EriOcc, OntOcc)
+```
+#Results
+One occurrence indicates one collection effort--anywhere from one to thousands of zebra mussels could be included. Lake Michigan has the highest number of occurrences at 610, while Lake Superior has the least, at 36.
+```{r}
+
+CountYear <- lm(n~Year, Summarize_sightings_by_year_month)
+summary(CountYear)
+ggplot(Summarize_sightings_by_year_month, aes(x=Summarize_sightings_by_year_month$Year, y=Summarize_sightings_by_year_month$n)) + geom_point() + geom_smooth(method = "lm") + labs(title="Occurrences By Year", y="Count",x="Year")
+
+```
+###Figure 5
+There is no relationship between number of occurrences and year. Number of sightings does not increase or decrease as time goes on.
+
+##Linear Regression of Size of Lake and HUC Counts
 ```{r SizeLR, echo=FALSE}
 #Want to use this chunk to see if there is a correlation between number of occurances in each lake and their size. Linear Regression Analysis. If there isn't a positive correlation then would it be more around tourist areas? or more populated with boating areas. 
  
@@ -238,6 +262,7 @@ OntOcc <- nrow(table(ont_occ))
 zm_occ <- c(SupOcc, MichOcc, HurOcc, EriOcc, OntOcc)
  
 ```
+###Figure 6
 A linear regression analysis was conducted after collecting data on the size of the lake and filtering out the data to only look at the HUC zebra mussel occurrences in the areas of the Great Lakes. The reason for this analysis is to understand if there is a relationship between the size of the lake in water volume, and the number of occurrences on certain HUCs. 
 
 Once the analysis was conducted, the p-value associated with the coefficient is not a significant value, and therefore not statistically significant. From the model, its states that a unit increase in the size of the lake leads to a `r sizeCoef` increase in the HUC Occurrences. Therefore, there is not a significant relationship between the HUC Occurrences, and the size of each Great Lake. The plot also depicts the trend line with the slope of `r sizeCoef` and there are confidences bands around the trend line also. This is a small data set with only five data points though, given there are only five Great Lakes. 
@@ -364,6 +389,8 @@ sup_counts_F8 <-nrow(table(SuperiorFirst8$HUC.8.Number))
  ggplot(sizeDatF8, aes(x=size_of_lake, y=zm_HUC_occurances_F8)) + geom_point() + geom_smooth(method = "lm") + labs(title="Size of Lake vs. HUC Occurrences", subtitle="From USGS Zebra Mussel Dataset For First 8 Years", y="HUC Occurrences", x="Size of Lake") 
  
 ```
+###Figure 6
+Number of HUC occurrences as a function of lake size for the first eight years.
 
 The p-value associated with the coefficient from the data in the range of 1991-1999 is not a significant value, and therefore not statistically significant. From the model, its states that a unit increase in the size of the lake leads to a `r sizeCoefF8` increase in the HUC Occurrences between the years of 1991-1999. Therefore, there is not a significant relationship between the HUC Occurrences, and the size of each Great Lake during that time frame. The plot also depicts the trend line with the slope of `r sizeCoefF8` and there are confidences bands around the trend line also. 
 
@@ -403,6 +430,8 @@ sup_counts_S8 <-nrow(table(SuperiorSecond8$HUC.8.Number))
  ggplot(sizeDatS8, aes(x=size_of_lake, y=zm_HUC_occurances_S8)) + geom_point() + geom_smooth(method = "lm") + labs(title="Size of Lake vs. HUC Occurrences", subtitle="From USGS Zebra Mussel Dataset For Second 8 Years", y="HUC Occurrences", x="Size of Lake") 
  
 ```
+###Figure 7
+Number of HUC occurrences as a function of lake size for the second eight years.
 
 The p-value associated with the coefficient from the data in the range of 2000-2008 is not a significant value, and therefore not statistically significant. From the model, its states that a unit increase in the size of the lake leads to a `r sizeCoefS8` increase in the HUC Occurrences between the years of 2000-2008. Therefore, there is not a significant relationship between the HUC Occurrences, and the size of each Great Lake during that time frame. The plot also depicts the trend line with the slope of `r sizeCoefS8` and there are confidences bands around the trend line also. This relationship is also negative compared the the first 8 years, which had a positive relationship. Even though neither of the slopes were significant, there could be a change occurring in those time periods that need to be explored. 
 
@@ -442,45 +471,12 @@ sup_counts_T8 <-nrow(table(SuperiorThird8$HUC.8.Number))
  ggplot(sizeDatT8, aes(x=size_of_lake, y=zm_HUC_occurances_T8)) + geom_point() + geom_smooth(method = "lm") + labs(title="Size of Lake vs. HUC Occurrences", subtitle="From USGS Zebra Mussel Dataset For Third 8 Years", y="HUC Occurrences", x="Size of Lake") 
  
 ```
+###Figure 8
+Number of HUC occurrences as a function of lake size for the third eight years.
 
 The p-value associated with the coefficient from the data in the range of 2009-2015 is not a significant value, and therefore not statistically significant. From the model, its states that a unit increase in the size of the lake leads to a `r sizeCoefT8` increase in the HUC Occurrences between the years of 2009-2015. Therefore, there is not a significant relationship between the HUC Occurrences, and the size of each Great Lake during that time frame. The plot also depicts the trend line with the slope of `r sizeCoefT8` and there are confidences bands around the trend line also. This coefficient is negative and larger than the previous 8 year period. However, the overall regression analyis shows a positive non significant trend, which insinuates that the first 8 year period has a large affect on the regression analysis since it is the only positive trend out of the three time periods. 
 
 
-```{r Temp, echo = FALSE}
-##  Temperature data
-library(readxl)
-lakes_92_18 <- read_excel("great lakes avg temp 1992-2018.xlsx")
-every_lake <- read_excel("every lake 1995-2018.xlsx")
-
-#This graph shows the average temperatures for the lakes over the course of the year
-#IT'S A GOOD GRAPH
-
-plot(lakes_92_18$Day,lakes_92_18$Superior, col= "blue", xlim= c(1,365), ylim= c(0,30), 
-     xlab= "Day of the Year", ylab= "Temperature (Celsius)", main= "Average Temp 1992-2018")
-points(lakes_92_18$Day,lakes_92_18$Michigan, col= "orange")
-points(lakes_92_18$Day,lakes_92_18$Huron, col="green" )
-points(lakes_92_18$Day,lakes_92_18$Erie, col= "red")
-points(lakes_92_18$Day,lakes_92_18$Ontario, col= "purple")
-legend(0, 27, legend=c("Superior","Michigan","Huron","Erie","Ontario"), 
-       col=c("blue","orange","green","red","purple"), lty=1, title= "Lake")
-# #This shows the consistency of the temperature of Lake Michigan over the years
-Mich_Temp <- every_lake%>%
-select(Year,Day,Mich.)
-# 
-#   plot(Temp)
-# 
-ggplot(Mich_Temp, aes(x= Year, y= Mich.))+geom_point()
-
-
-#This shows the temperature of Lake Superior 
-sup_temp <-  every_lake%>%
-  select(Year,Day,Sup.)
-ggplot(sup_temp, aes(x= Year, y= Sup.))+geom_point()
-
-
-```
-
-The average temperature of each lake throughout the year shows that Lake Erie get sthe warmest and Lake Superior is the coldest. When specifically looked at, Lake Superior has a high temperature that is about 5 degrees lower than the high temperature of Lake Michigan. There is a lower density of zebra mussels in Lake Superior due to its lower temperatures and harsher conditions.  
 
 ```{r TempLR, echo = FALSE}
 
@@ -557,3 +553,179 @@ ggplot(volumeDat, aes(x=volume_of_lake, y=zm_HUC_occurances)) + geom_point() + g
 
 ```
 
+
+<<<<<<< HEAD
+```{r Temp, echo = FALSE}
+##  Temperature data
+library(readxl)
+library(dplyr)
+library(ggplot2)
+lakes_92_18 <- read_excel("great lakes avg temp 1992-2018.xlsx")
+every_lake <- read_excel("every lake 1995-2018.xlsx")
+
+#This graph shows the average temperatures for the lakes over the course of the year
+
+plot(lakes_92_18$Day,lakes_92_18$Superior, col= "blue", xlim= c(1,365), ylim= c(0,30), 
+     xlab= "Day of the Year", ylab= "Temperature (Celsius)", main= "Average Temp 1992-2018")
+points(lakes_92_18$Day,lakes_92_18$Michigan, col= "orange")
+points(lakes_92_18$Day,lakes_92_18$Huron, col="green" )
+points(lakes_92_18$Day,lakes_92_18$Erie, col= "red")
+points(lakes_92_18$Day,lakes_92_18$Ontario, col= "purple")
+legend(0, 27, legend=c("Superior","Michigan","Huron","Erie","Ontario"), 
+       col=c("blue","orange","green","red","purple"), lty=1, title= "Lake")
+
+#This shows the number of sightings per lake per year
+library(stringr)
+Sup_by_year <- dat %>%
+  select(Locality,Year) %>%
+  filter(str_detect(Locality,"Superior"))%>%
+  count(Year)
+plot(Sup_by_year, ylab= "Number of Sightings", main= "Sightings per Year", col= "blue", pch=19, ylim= c(0,100))
+Mich_by_year <- dat %>%
+  select(Locality,Year) %>%
+  filter(str_detect(Locality,"Michigan"))%>%
+  count(Year)
+points(Mich_by_year, col= "orange", pch= 19)
+Huron_by_year <- dat %>%
+  select(Locality,Year) %>%
+  filter(str_detect(Locality,"Huron"))%>%
+  count(Year)
+points(Huron_by_year, col= "green", pch=19)
+Erie_by_Year <- dat %>%
+  select(Locality,Year) %>%
+  filter(str_detect(Locality,"Erie"))%>%
+  count(Year)
+points(Erie_by_Year,  col="red", pch=19)
+Ont_by_Year <- dat %>%
+  select(Locality,Year) %>%
+  filter(str_detect(Locality,"Ontario"))%>%
+  count(Year)
+points(Ont_by_Year, col= "purple", pch= 19)
+legend(2007, 100, legend=c("Superior","Michigan","Huron","Erie","Ontario"), 
+       col=c("blue","orange","green","red","purple"), lty=1, title= "Lake")
+
+#Find high temp of each year of each lake
+sup_high_temp <- every_lake%>%
+  select(Year,Sup.)%>%
+  group_by(Year)%>%
+  filter(Sup.==max(Sup.))
+plot(sup_high_temp, col= "blue", pch=19, ylim= c(10,30), ylab= "High Temp (Celsius)", 
+     main= "High Temperature per Year")
+Mich_high_temp <- every_lake%>%
+  select(Year,Mich.)%>%
+  group_by(Year)%>%
+  filter(Mich.==max(Mich.))
+points(Mich_high_temp, col="orange", pch=19)
+Huron_high_temp <- every_lake%>%
+  select(Year,Huron)%>%
+  group_by(Year)%>%
+  filter(Huron==max(Huron))
+points(Huron_high_temp, col="green", pch=19)
+Erie_high_temp <- every_lake%>%
+  select(Year,Erie)%>%
+  group_by(Year)%>%
+  filter(Erie==max(Erie))
+points(Erie_high_temp,col = "red", pch=19)
+Ont_high_temp <-every_lake%>%
+  select(Year,Ont.)%>%
+  group_by(Year)%>%
+  filter(Ont.==max(Ont.))
+points(Ont_high_temp,col="purple", pch=19)
+
+#Correlation between high temp and number of sightings
+lake_temp_counts <- read_excel("lake high temp and counts.xlsx")
+
+plot(lake_temp_counts$`Ont. Temp`,lake_temp_counts$`Ont. Count`, xlab= "High Temperature (Celsius)", 
+     ylab= "Number of Sightings", main= "Temperature vs Number of Sightings", 
+     col= "purple", pch=19, xlim= c(14,27), ylim= c(0,60))
+points(lake_temp_counts$`Erie Temp.`,lake_temp_counts$`Erie Count`, col= "red", pch=19)
+points(lake_temp_counts$`Huron Temp.`,lake_temp_counts$`Huron Count`, col= "green", pch=19)
+points(lake_temp_counts$`Mich. Temp`, lake_temp_counts$`Mich. Count`, col= "orange", pch=19)
+points(lake_temp_counts$`Sup. Temp`, lake_temp_counts$`Sup. Count`, col= "blue", pch=19)
+abline(lm(lake_temp_counts$`Ont. Temp` ~ lake_temp_counts$`Ont. Count`), col= "purple")
+abline(lm(lake_temp_counts$`Erie Temp.`~ lake_temp_counts$`Erie Count`), col= "red")
+abline(lm(lake_temp_counts$`Huron Temp.`~lake_temp_counts$`Huron Count`), col= "green")
+abline(lm(lake_temp_counts$`Mich. Temp`~lake_temp_counts$`Mich. Count`), col="orange")
+abline(lm(lake_temp_counts$`Sup. Temp`~lake_temp_counts$`Sup. Count`), col= "blue")
+legend(14, 60, legend=c("Superior","Michigan","Huron","Erie","Ontario"), 
+       col=c("blue","orange","green","red","purple"), lty=1, title= "Lake")
+
+#Gives R squared, p values, other statistics
+summary(lm(lake_temp_counts$`Ont. Temp` ~ lake_temp_counts$`Ont. Count`))
+summary(lm(lake_temp_counts$`Erie Temp.`~ lake_temp_counts$`Erie Count`))
+summary(lm(lake_temp_counts$`Huron Temp.`~lake_temp_counts$`Huron Count`))      
+summary(lm(lake_temp_counts$`Mich. Temp`~lake_temp_counts$`Mich. Count`))
+summary(lm(lake_temp_counts$`Sup. Temp`~lake_temp_counts$`Sup. Count`))
+
+```
+The average temperature of each lake throughout the year shows that Lake Erie get sthe warmest and Lake Superior is the coldest. The number of sightings per lake per year was compared with the high temperature of each lake for the years 1995-2018. Since the temperature data begins with 1995, there could not be a comparison including sighting data for any year prior to 1995. There are no significant correlaitons between the high temperature of the lake and the number of sightings that occurred during any given year. Therefore, it can be concluded that temperature is likely not a driving factor of zebra mussel spread or sighting collection. 
+```{r Bias, echo=FALSE}
+#Looking at sampling efforts per month
+
+Sup_by_month <- dat %>%
+  select(Locality,Month) %>%
+  filter(str_detect(Locality,"Superior"))%>%
+  count(Month)
+plot(Sup_by_month, ylab= "Number of Sightings", main= "Sightings per Month", col= "blue", pch=19, ylim= c(0,100))
+
+Mich_by_month <- dat %>%
+  select(Locality,Month) %>%
+  filter(str_detect(Locality,"Michigan"))%>%
+  count(Month)
+points(Mich_by_month, col= "orange", pch= 19)
+
+Huron_by_month <- dat %>%
+  select(Locality,Month) %>%
+  filter(str_detect(Locality,"Huron"))%>%
+  count(Month)
+points(Huron_by_month, col= "green", pch=19)
+
+Erie_by_month <- dat %>%
+  select(Locality,Month) %>%
+  filter(str_detect(Locality,"Erie"))%>%
+  count(Month)
+points(Erie_by_month,  col="red", pch=19)
+
+Ont_by_month <- dat %>%
+  select(Locality,Month) %>%
+  filter(str_detect(Locality,"Ontario"))%>%
+  count(Month)
+points(Ont_by_month, col= "purple", pch= 19)
+
+legend(1, 100, legend=c("Superior","Michigan","Huron","Erie","Ontario"), 
+       col=c("blue","orange","green","red","purple"), lty=1, title= "Lake")
+
+```
+
+
+
+#Discussion
+This analysis was mostly a descriptive visualization--where, and when, are zebra mussels found? Additional linear models demonstrate no significant relationship of zebra mussel occurrences to the size (area or volume) of the lake, or the time period. There are more sightings during the summer months (approx. July-October). This is likely due to the fact that most sampling is done during the summer when the lakes are not frozen. Therefore, there is a significant bias for what time of year there are the most sightings of zerba mussels. In general, zebra mussel sightings do not appear correlated with either volume or surface area of lake, the timeframe (year) collected, or temperature. The only correlation is between the time of year and occurrences, and this is likely due to logistical sampling based limitations. Further analyses could be conducted on the relationship of zebra mussel occurrences to latitude, or a comparison with biotic characteristics such as the presence of another invasive species, quagga mussels. One question in this regard could be how long after introduction of quagga mussels zebra mussels persist before being outcompeted, since quagga mussels exist at much higher densities than zebra mussels. Projections under different temperature regimes based on global warming could also be carried out, though the analyses here demonstrate that temperatures found within this temperate biome is within the range tolerated by zebra mussels. However, zebra mussels may be affected by high temperatures in the southern United States, so predicted increasing temperatures may have an impact on populations in the future.
+
+
+# Easton comments
+
+In general, you did a nice job of finding a dataset, learning about the system, and running some analyses. Most of my comments below have to deal with the presentation of the results and organization of the text. 
+
+Things to do for final draft:
+
+- In general the figures look nice, but they can be cleaned up with little things like the axes titles
+- Reorder the text at the beginning so it reads with a traditional introduction, methods, and results
+- add appropriate figure captions
+- include formatting to make R markdown output look nicer (e.g. section headers, remove chunk messages)
+- Have a short paragraph that summarizes and puts your results in context
+
+
+References
+Hebert, P. D. N., Mackie, G. L., & Muncaster, B. W. (1989). Ecological and Genetic Studies on Dreissena polymorpha ( Pallas ): A New Mollusc in the Great Lakes. Candian Journal of Fisheries and Aquatic Sciences. https://doi.org/10.1139/f89-202
+
+Macisaac, H. J. (2014). Potential Abiotic and Biotic Impacts of Zebra Mussels on the Inland Waters of North America Potential Abiotic and Biotic Impacts of Zebra Mussels on the, (March). https://doi.org/10.1093/icb/36.3.287
+
+Mackie, G. L. (2016). Biology of the exotic zebra mussel , Dreissena polymporph , in relation to native bivalves and its potential impact in Lake St . Clair, (July 1991). https://doi.org/10.1007/BF00024759
+
+Nichols, S. J. (1996). Variations in the Reproductive Cycle of Dreissena Polymorpha in Europe, Russia, and North America. American Zoologist, 36, 311–325.
+
+Strayer, D. L., Caraco, N. F., Cole, J. J., Findlay, S., & Pace, M. L. (1999). Transformation of Freshwater A case study of zebra mussels in the Hudson River. BioScience, 49(1).
+
+Wacker, E. A. (2003). Food quality controls reproduction of the zebra mussel ( Dreissena polymorpha ). Oecologia, 135, 332–338. https://doi.org/10.1007/s00442-003-1208-5
+>>>>>>> e30d40a615b2019c8289be6a267060cf2635fdd2
