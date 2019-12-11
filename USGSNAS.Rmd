@@ -6,7 +6,6 @@ output:
   pdf_document: default
   html_document:
     df_print: paged
-  pdf_document: default
 ---
 #Introduction
 
@@ -53,20 +52,20 @@ fil_dat <- select(dat, Specimen.Number, Species.ID, Group, Family, Scientific.Na
 #Methods 
 
 ##Initial Visualization
-```{r, echo = FALSE}
+```{r, echo = FALSE, warning=FALSE}
 # Just looking at some different ways to visualize and understand the data
 ggplot(fil_dat, aes(x=dat$HUC.8.Number, y=dat$State)) + geom_point(aes(col=dat$Year), size=3) +labs(title="HUC Number vs. State", subtitle="From USGS Zebra Mussel Dataset", y="State", x="HUC Number", col = "Years") 
 ```
-###Figure 1
+**Figure 1**
 This graph is one way in which the data set from the USGS zebra mussel data can be visualized. The horizontal axis represents the HUC Number and it is plotted again the state in which that HUC resides. The color of the point exhibits the time when the data was collected. There appears to be an even spread of years throughout the plot given by the various color gradients. 
 
-```{r,echo=FALSE}
+```{r,echo=FALSE, warning=FALSE}
 # ggplot(fil_dat, aes(x=dat$HUC.8.Number, y=dat$Year)) + geom_point(aes(col=dat$State), size=3) +labs(title="HUC Number vs. Year", subtitle="From USGS Zebra Mussel Dataset", y="Year", x="HUC Number")
 
 
 counts <- table(fil_dat$HUC.8.Number)
 barplot(counts, main="HUC Distribution", 
-   xlab="Number of Occurances in HUC")
+   xlab="HUC", ylab = "Count")
 
 # Look into the other large points from the HUC Distribution
 
@@ -80,11 +79,13 @@ barplot(counts, main="HUC Distribution",
 
 
 ```
-###Figure 2
+
+
+**Figure 2**
 Number of zebra mussel occurrences per Hydraulic Unit Code.
 
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE}
 #dat <- read.csv("C:/Users/kmb057/Documents/FundamentalsQuantReasoning/QuantReasoning/NAS-Data-Download.csv")
 
 #remove 0,0 coordinate row
@@ -122,17 +123,18 @@ map3 <- states + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=establ
 ```
 
 
-
-```{r,echo=FALSE}
+```{r,echo=FALSE, warning = FALSE}
 
 
 Summarize_sightings_by_year_month <- dat %>% count(Year, Month,State)
 ggplot(Summarize_sightings_by_year_month, aes(fill=Summarize_sightings_by_year_month$State, y=Summarize_sightings_by_year_month$n, x=Summarize_sightings_by_year_month$Year)) +labs(x = "Year",y="Occurrences",colour="State") + geom_bar(position="dodge", stat="identity")+theme(legend.position = "none")
 ```
-###Figure 3
+
+
+**Figure 3**
 This graph demonstrates the number of occurrences by state, month, and year. The spread from state to state is observable.
  
- ```{r,echo=FALSE}
+```{r,echo=FALSE, warning = FALSE}
 #filter data for only Great Lakes lat and long
 BorderingGreatLakes <- c("New York","Pennsylvania","Ohio","Indiana","Michigan","Illinois","Wisconsin","Minnesota")
 PlottingBorder <- map_data("state", region=BorderingGreatLakes)
@@ -168,7 +170,9 @@ map8 <- Borders + geom_point(aes(x=Longitude,y=Latitude,color=Status),data=Ontar
  
  GreatLakes
 ```
-###Figure 4
+
+
+**Figure 4**
 This map shows the occurrences for only the Great Lakes region. Notably, Lake Michigan has the most, and Lake Superior has the least.
 ```{r,echo=FALSE}
 #number of specimens found in each lake`
@@ -188,18 +192,20 @@ zm_occ <- c(SupOcc, MichOcc, HurOcc, EriOcc, OntOcc)
 ```
 #Results
 One occurrence indicates one collection effort--anywhere from one to thousands of zebra mussels could be included. Lake Michigan has the highest number of occurrences at 610, while Lake Superior has the least, at 36.
-```{r}
+```{r, echo = FALSE, warning = FALSE}
 
 CountYear <- lm(n~Year, Summarize_sightings_by_year_month)
-summary(CountYear)
+#summary(CountYear)
 ggplot(Summarize_sightings_by_year_month, aes(x=Summarize_sightings_by_year_month$Year, y=Summarize_sightings_by_year_month$n)) + geom_point() + geom_smooth(method = "lm") + labs(title="Occurrences By Year", y="Count",x="Year")
 
 ```
-###Figure 5
+
+
+**Figure 5**
 There is no relationship between number of occurrences and year. Number of sightings does not increase or decrease as time goes on.
 
 ##Linear Regression of Size of Lake and HUC Counts
-```{r SizeLR, echo=FALSE}
+```{r SizeLR, echo=FALSE, warning=FALSE}
 #Want to use this chunk to see if there is a correlation between number of occurances in each lake and their size. Linear Regression Analysis. If there isn't a positive correlation then would it be more around tourist areas? or more populated with boating areas. 
  
  # https://www.britannica.com/place/Great-Lakes
@@ -219,27 +225,10 @@ There is no relationship between number of occurrences and year. Number of sight
 
  
  HUCmodelSize <- lm(zm_HUC_occurances~size_of_lake, sizeDat)
- summary(HUCmodelSize)
+ #summary(HUCmodelSize)
  sizeCoef <- coef(HUCmodelSize)[2]
  
- 
-# Call:
-#lm(formula = zm_occurances ~ size_of_lake, data = sizeDat)
 
-#Residuals:
-#     1      2      3      4      5 
-#-6.915 14.778 -4.348  6.011 -9.526 
-
-#Coefficients:
-#              Estimate Std. Error t value Pr(>|t|)
-#(Intercept)  1.020e+01  1.214e+01    0.84    0.462
-#size_of_lake 1.802e-04  5.811e-04    0.31    0.777
- 
- # The p-value associated with the coefficient is not a significant value, and therefore not statistically significant. From the model, its states that a unit increase in the size of the lake leads to a 0.0001802 increase in the HUC Occurances.  
-
-#Residual standard error: 11.72 on 3 degrees of freedom
-#Multiple R-squared:  0.03104,	Adjusted R-squared:  -0.2919 
-#F-statistic: 0.0961 on 1 and 3 DF,  p-value: 0.7768
  
  
  ggplot(sizeDat, aes(x=size_of_lake, y=zm_HUC_occurances)) + geom_point() + geom_smooth(method = "lm") + labs(title="Size of Lake vs. HUC Occurrences", subtitle="From USGS Zebra Mussel Dataset", y="HUC Occurrences", x="Size of Lake") 
@@ -262,14 +251,16 @@ OntOcc <- nrow(table(ont_occ))
 zm_occ <- c(SupOcc, MichOcc, HurOcc, EriOcc, OntOcc)
  
 ```
-###Figure 6
+
+
+**Figure 6**
 A linear regression analysis was conducted after collecting data on the size of the lake and filtering out the data to only look at the HUC zebra mussel occurrences in the areas of the Great Lakes. The reason for this analysis is to understand if there is a relationship between the size of the lake in water volume, and the number of occurrences on certain HUCs. 
 
 Once the analysis was conducted, the p-value associated with the coefficient is not a significant value, and therefore not statistically significant. From the model, its states that a unit increase in the size of the lake leads to a `r sizeCoef` increase in the HUC Occurrences. Therefore, there is not a significant relationship between the HUC Occurrences, and the size of each Great Lake. The plot also depicts the trend line with the slope of `r sizeCoef` and there are confidences bands around the trend line also. This is a small data set with only five data points though, given there are only five Great Lakes. 
 
 
 
-```{r separateSizeCode, echo = FALSE}
+```{r separateSizeCode, echo = FALSE, warning = FALSE}
 # This chunk will change the years that the HUC data is being looked at in 8 year chunks
  SuperiorFirst8 <- dat %>% 
    filter(Latitude>=46 & Latitude<=50) %>% 
@@ -348,11 +339,12 @@ OntarioThird8 <- dat %>%
 
 ```
 
+
 To conduct further analysis, that data used used the time span of the years 1991-2015 and the data was then split into three different different time period. The time periods are [1991-1999], [2000-2008], and [2009-2015]. Each time period has a linear regression analysis associated with it and the details for each will be described along with a graph of each trend line. 
 
 
 
-```{r regressFirst8, echo = FALSE}
+```{r regressFirst8, echo = FALSE, warning=FALSE}
   ## This is the first 8 years of the data (1991-1999)
 
 sup_counts_F8 <-nrow(table(SuperiorFirst8$HUC.8.Number))
@@ -363,24 +355,9 @@ sup_counts_F8 <-nrow(table(SuperiorFirst8$HUC.8.Number))
  zm_HUC_occurances_F8 <-c(sup_counts_F8, mich_counts_F8, huron_counts_F8, erie_counts_F8, ont_counts_F8)
 
  HUCmodelSizeF8 <- lm(zm_HUC_occurances_F8~size_of_lake, sizeDat)
- summary(HUCmodelSizeF8)
+ #summary(HUCmodelSizeF8)
  sizeCoefF8 <- coef(HUCmodelSizeF8)[2]
-#  
-# Call:
-# lm(formula = zm_HUC_occurances_F8 ~ size_of_lake, data = sizeDat)
-# 
-# Residuals:
-#        1        2        3        4        5 
-# -5.83035  9.09380 -0.04949  2.62999 -5.84395 
-# 
-# Coefficients:
-#               Estimate Std. Error t value Pr(>|t|)
-# (Intercept)  5.3414746  7.5144357   0.711    0.528
-# size_of_lake 0.0002047  0.0003596   0.569    0.609
-# 
-# Residual standard error: 7.252 on 3 degrees of freedom
-# Multiple R-squared:  0.09748,	Adjusted R-squared:  -0.2034 
-# F-statistic: 0.324 on 1 and 3 DF,  p-value: 0.609
+
 
  
  sizeDatF8 <- data.frame(size_of_lake, zm_HUC_occurances_F8)
@@ -389,12 +366,14 @@ sup_counts_F8 <-nrow(table(SuperiorFirst8$HUC.8.Number))
  ggplot(sizeDatF8, aes(x=size_of_lake, y=zm_HUC_occurances_F8)) + geom_point() + geom_smooth(method = "lm") + labs(title="Size of Lake vs. HUC Occurrences", subtitle="From USGS Zebra Mussel Dataset For First 8 Years", y="HUC Occurrences", x="Size of Lake") 
  
 ```
-###Figure 6
+
+
+**Figure 7**
 Number of HUC occurrences as a function of lake size for the first eight years.
 
 The p-value associated with the coefficient from the data in the range of 1991-1999 is not a significant value, and therefore not statistically significant. From the model, its states that a unit increase in the size of the lake leads to a `r sizeCoefF8` increase in the HUC Occurrences between the years of 1991-1999. Therefore, there is not a significant relationship between the HUC Occurrences, and the size of each Great Lake during that time frame. The plot also depicts the trend line with the slope of `r sizeCoefF8` and there are confidences bands around the trend line also. 
 
-```{r regressSecond8, echo = FALSE}
+```{r regressSecond8, echo = FALSE, warning=FALSE}
   ## This is the second 8 years of the data (2000-2008)
 
 sup_counts_S8 <-nrow(table(SuperiorSecond8$HUC.8.Number))
@@ -405,24 +384,9 @@ sup_counts_S8 <-nrow(table(SuperiorSecond8$HUC.8.Number))
  zm_HUC_occurances_S8 <-c(sup_counts_S8, mich_counts_S8, huron_counts_S8, erie_counts_S8, ont_counts_S8)
 
  HUCmodelSizeS8 <- lm(zm_HUC_occurances_S8~size_of_lake, sizeDat)
- summary(HUCmodelSizeS8)
+# summary(HUCmodelSizeS8)
  sizeCoefS8 <- coef(HUCmodelSizeS8)[2]
  
-#  Call:
-# lm(formula = zm_HUC_occurances_S8 ~ size_of_lake, data = sizeDat)
-# 
-# Residuals:
-#       1       2       3       4       5 
-# -1.8982  1.7347  0.7621  3.2509 -3.8495 
-# 
-# Coefficients:
-#                Estimate Std. Error t value Pr(>|t|)
-# (Intercept)   6.136e+00  3.415e+00   1.797    0.170
-# size_of_lake -3.905e-05  1.634e-04  -0.239    0.827
-# 
-# Residual standard error: 3.295 on 3 degrees of freedom
-# Multiple R-squared:  0.01868,	Adjusted R-squared:  -0.3084 
-# F-statistic: 0.0571 on 1 and 3 DF,  p-value: 0.8265
  
  sizeDatS8 <- data.frame(size_of_lake, zm_HUC_occurances_S8)
 
@@ -430,12 +394,14 @@ sup_counts_S8 <-nrow(table(SuperiorSecond8$HUC.8.Number))
  ggplot(sizeDatS8, aes(x=size_of_lake, y=zm_HUC_occurances_S8)) + geom_point() + geom_smooth(method = "lm") + labs(title="Size of Lake vs. HUC Occurrences", subtitle="From USGS Zebra Mussel Dataset For Second 8 Years", y="HUC Occurrences", x="Size of Lake") 
  
 ```
-###Figure 7
+
+
+**Figure 8**
 Number of HUC occurrences as a function of lake size for the second eight years.
 
 The p-value associated with the coefficient from the data in the range of 2000-2008 is not a significant value, and therefore not statistically significant. From the model, its states that a unit increase in the size of the lake leads to a `r sizeCoefS8` increase in the HUC Occurrences between the years of 2000-2008. Therefore, there is not a significant relationship between the HUC Occurrences, and the size of each Great Lake during that time frame. The plot also depicts the trend line with the slope of `r sizeCoefS8` and there are confidences bands around the trend line also. This relationship is also negative compared the the first 8 years, which had a positive relationship. Even though neither of the slopes were significant, there could be a change occurring in those time periods that need to be explored. 
 
-```{r regressThird8, echo = FALSE}
+```{r regressThird8, echo = FALSE, warning = FALSE}
   ## This is the third 8 years of the data (2009-2015)
 
 sup_counts_T8 <-nrow(table(SuperiorThird8$HUC.8.Number))
@@ -446,41 +412,29 @@ sup_counts_T8 <-nrow(table(SuperiorThird8$HUC.8.Number))
  zm_HUC_occurances_T8 <-c(sup_counts_T8, mich_counts_T8, huron_counts_T8, erie_counts_T8, ont_counts_T8)
 
  HUCmodelSizeT8 <- lm(zm_HUC_occurances_T8~size_of_lake, sizeDat)
- summary(HUCmodelSizeT8)
+
+ # summary(HUCmodelSizeT8)
  sizeCoefT8 <- coef(HUCmodelSizeT8)[2]
  sizeDatT8 <- data.frame(size_of_lake, zm_HUC_occurances_T8)
-# 
-#  Call:
-# lm(formula = zm_HUC_occurances_T8 ~ size_of_lake, data = sizeDat)
-# 
-# Residuals:
-#       1       2       3       4       5 
-#  0.2118  1.4717 -2.4732  4.4961 -3.7063 
-# 
-# Coefficients:
-#                Estimate Std. Error t value Pr(>|t|)
-# (Intercept)   4.284e+00  3.890e+00   1.101    0.351
-# size_of_lake -7.874e-05  1.862e-04  -0.423    0.701
-# 
-# Residual standard error: 3.754 on 3 degrees of freedom
-# Multiple R-squared:  0.05628,	Adjusted R-squared:  -0.2583 
-# F-statistic: 0.1789 on 1 and 3 DF,  p-value: 0.7008
+
 
  
  
  ggplot(sizeDatT8, aes(x=size_of_lake, y=zm_HUC_occurances_T8)) + geom_point() + geom_smooth(method = "lm") + labs(title="Size of Lake vs. HUC Occurrences", subtitle="From USGS Zebra Mussel Dataset For Third 8 Years", y="HUC Occurrences", x="Size of Lake") 
  
 ```
-###Figure 8
+
+
+**Figure 9**
 Number of HUC occurrences as a function of lake size for the third eight years.
 
 The p-value associated with the coefficient from the data in the range of 2009-2015 is not a significant value, and therefore not statistically significant. From the model, its states that a unit increase in the size of the lake leads to a `r sizeCoefT8` increase in the HUC Occurrences between the years of 2009-2015. Therefore, there is not a significant relationship between the HUC Occurrences, and the size of each Great Lake during that time frame. The plot also depicts the trend line with the slope of `r sizeCoefT8` and there are confidences bands around the trend line also. This coefficient is negative and larger than the previous 8 year period. However, the overall regression analyis shows a positive non significant trend, which insinuates that the first 8 year period has a large affect on the regression analysis since it is the only positive trend out of the three time periods. 
 
 
 
-```{r TempLR, echo = FALSE}
-
-
+```{r TempLR, echo = FALSE, warning = FALSE}
+library(readxl)
+lakes_92_18 <- read_excel("greatlakesavgtemp1992-2018.xlsx")
 superiorAvgTemp <- sum(lakes_92_18$Superior)/366
 michiganAvgTemp <- sum(lakes_92_18$Michigan)/366
 huronAvgTemp <- sum(lakes_92_18$Huron)/366
@@ -502,32 +456,19 @@ avgTemp <-c(superiorAvgTemp, michiganAvgTemp, huronAvgTemp,erieAvgTemp,ontarioAv
 
  
  HUCmodelTemp <- lm(zm_HUC_occurances~avgTemp, TempDat)
- summary(HUCmodelTemp)
+ #summary(HUCmodelTemp)
  
-#  Call:
-# lm(formula = zm_HUC_occurances ~ avgTemp, data = TempDat)
-# 
-# Residuals:
-#        1        2        3        4        5 
-#  -0.6765  14.9544  -2.9716   1.5067 -12.8131 
-# 
-# Coefficients:
-#             Estimate Std. Error t value Pr(>|t|)
-# (Intercept)    0.867     29.363    0.03    0.978
-# avgTemp        1.388      3.150    0.44    0.689
-# 
-# Residual standard error: 11.54 on 3 degrees of freedom
-# Multiple R-squared:  0.06075,	Adjusted R-squared:  -0.2523 
-# F-statistic: 0.194 on 1 and 3 DF,  p-value: 0.6894
 
  
  ggplot(sizeDatT8, aes(x=avgTemp, y=zm_HUC_occurances_T8)) + geom_point() + geom_smooth(method = "lm") + labs(title="Temperature of Lake vs. HUC Occurrences", subtitle="From USGS Zebra Mussel Dataset", y="HUC Occurrences", x="Temperature of Lake") 
 
 ```
 
-Analysis to be done on this, not significant values here.
 
-```{r, echo=FALSE}
+**Figure 10**
+This plot show the linear regression line that was fit to the data, along with the 95% confidence bands. Analysis to be done on this, not significant values here.
+
+```{r, echo=FALSE, warning = FALSE}
  # Superior, Michigan, Huron, Erie, Ontario sizes in cubic miles
 volume_of_lake <- c(2900, 1180, 850, 116, 393)
 
@@ -543,7 +484,7 @@ volumeDat <- data.frame(volume_of_lake, zm_HUC_occurances)
 
 
 HUCmodelVolume <- lm(zm_HUC_occurances~volume_of_lake, volumeDat)
-summary(HUCmodelVolume)
+#summary(HUCmodelVolume)
 
 
 
@@ -554,14 +495,17 @@ ggplot(volumeDat, aes(x=volume_of_lake, y=zm_HUC_occurances)) + geom_point() + g
 ```
 
 
-<<<<<<< HEAD
-```{r Temp, echo = FALSE}
+**Figure 11**
+This plot displays the linear regression line fitted for the HUC Occurrences and the volume of each lake. Analysis to be done at on this at another time. 
+
+##Temperature Analysis
+```{r Temp, echo = FALSE, warning=FALSE}
 ##  Temperature data
 library(readxl)
 library(dplyr)
 library(ggplot2)
-lakes_92_18 <- read_excel("great lakes avg temp 1992-2018.xlsx")
-every_lake <- read_excel("every lake 1995-2018.xlsx")
+lakes_92_18 <- read_excel("greatlakesavgtemp1992-2018.xlsx")
+every_lake <- read_excel("everylake1995-2018.xlsx")
 
 #This graph shows the average temperatures for the lakes over the course of the year
 
@@ -574,6 +518,14 @@ points(lakes_92_18$Day,lakes_92_18$Ontario, col= "purple")
 legend(0, 27, legend=c("Superior","Michigan","Huron","Erie","Ontario"), 
        col=c("blue","orange","green","red","purple"), lty=1, title= "Lake")
 
+
+```
+
+**Figure 12**
+This graph depicts the average temperatures for the lake over the course of the year.
+
+
+```{r Temp2, echo = FALSE, warning=FALSE, eval=FALSE}
 #This shows the number of sightings per lake per year
 library(stringr)
 Sup_by_year <- dat %>%
@@ -603,7 +555,11 @@ Ont_by_Year <- dat %>%
 points(Ont_by_Year, col= "purple", pch= 19)
 legend(2007, 100, legend=c("Superior","Michigan","Huron","Erie","Ontario"), 
        col=c("blue","orange","green","red","purple"), lty=1, title= "Lake")
+```
 
+
+
+```{r Temp3, echo = FALSE, warning=FALSE, eval=FALSE}
 #Find high temp of each year of each lake
 sup_high_temp <- every_lake%>%
   select(Year,Sup.)%>%
@@ -632,8 +588,12 @@ Ont_high_temp <-every_lake%>%
   filter(Ont.==max(Ont.))
 points(Ont_high_temp,col="purple", pch=19)
 
+```
+
+
+```{r Temp4, echo = FALSE, warning=FALSE}
 #Correlation between high temp and number of sightings
-lake_temp_counts <- read_excel("lake high temp and counts.xlsx")
+lake_temp_counts <- read_excel("lakehightempandcounts.xlsx")
 
 plot(lake_temp_counts$`Ont. Temp`,lake_temp_counts$`Ont. Count`, xlab= "High Temperature (Celsius)", 
      ylab= "Number of Sightings", main= "Temperature vs Number of Sightings", 
@@ -651,15 +611,19 @@ legend(14, 60, legend=c("Superior","Michigan","Huron","Erie","Ontario"),
        col=c("blue","orange","green","red","purple"), lty=1, title= "Lake")
 
 #Gives R squared, p values, other statistics
-summary(lm(lake_temp_counts$`Ont. Temp` ~ lake_temp_counts$`Ont. Count`))
-summary(lm(lake_temp_counts$`Erie Temp.`~ lake_temp_counts$`Erie Count`))
-summary(lm(lake_temp_counts$`Huron Temp.`~lake_temp_counts$`Huron Count`))      
-summary(lm(lake_temp_counts$`Mich. Temp`~lake_temp_counts$`Mich. Count`))
-summary(lm(lake_temp_counts$`Sup. Temp`~lake_temp_counts$`Sup. Count`))
+#summary(lm(lake_temp_counts$`Ont. Temp` ~ lake_temp_counts$`Ont. Count`))
+#summary(lm(lake_temp_counts$`Erie Temp.`~ lake_temp_counts$`Erie Count`))
+#summary(lm(lake_temp_counts$`Huron Temp.`~lake_temp_counts$`Huron Count`))      
+#summary(lm(lake_temp_counts$`Mich. Temp`~lake_temp_counts$`Mich. Count`))
+#summary(lm(lake_temp_counts$`Sup. Temp`~lake_temp_counts$`Sup. Count`))
 
 ```
-The average temperature of each lake throughout the year shows that Lake Erie get sthe warmest and Lake Superior is the coldest. The number of sightings per lake per year was compared with the high temperature of each lake for the years 1995-2018. Since the temperature data begins with 1995, there could not be a comparison including sighting data for any year prior to 1995. There are no significant correlaitons between the high temperature of the lake and the number of sightings that occurred during any given year. Therefore, it can be concluded that temperature is likely not a driving factor of zebra mussel spread or sighting collection. 
-```{r Bias, echo=FALSE}
+
+
+**Figure 13** 
+The average temperature of each lake throughout the year shows that Lake Erie gets the warmest and Lake Superior is the coldest. The number of sightings per lake per year was compared with the high temperature of each lake for the years 1995-2018. Since the temperature data begins with 1995, there could not be a comparison including sighting data for any year prior to 1995. There are no significant correlaitons between the high temperature of the lake and the number of sightings that occurred during any given year. Therefore, it can be concluded that temperature is likely not a driving factor of zebra mussel spread or sighting collection. 
+
+```{r Bias, echo=FALSE, warning = FALSE, eval=FALSE}
 #Looking at sampling efforts per month
 
 Sup_by_month <- dat %>%
@@ -700,7 +664,7 @@ legend(1, 100, legend=c("Superior","Michigan","Huron","Erie","Ontario"),
 
 
 #Discussion
-This analysis was mostly a descriptive visualization--where, and when, are zebra mussels found? Additional linear models demonstrate no significant relationship of zebra mussel occurrences to the size (area or volume) of the lake, or the time period. There are more sightings during the summer months (approx. July-October). This is likely due to the fact that most sampling is done during the summer when the lakes are not frozen. Therefore, there is a significant bias for what time of year there are the most sightings of zerba mussels. In general, zebra mussel sightings do not appear correlated with either volume or surface area of lake, the timeframe (year) collected, or temperature. The only correlation is between the time of year and occurrences, and this is likely due to logistical sampling based limitations. Further analyses could be conducted on the relationship of zebra mussel occurrences to latitude, or a comparison with biotic characteristics such as the presence of another invasive species, quagga mussels. One question in this regard could be how long after introduction of quagga mussels zebra mussels persist before being outcompeted, since quagga mussels exist at much higher densities than zebra mussels. Projections under different temperature regimes based on global warming could also be carried out, though the analyses here demonstrate that temperatures found within this temperate biome is within the range tolerated by zebra mussels. However, zebra mussels may be affected by high temperatures in the southern United States, so predicted increasing temperatures may have an impact on populations in the future.
+This analysis was mostly a descriptive visualization--where, and when, are zebra mussels found? Additional linear models demonstrate no significant relationship of zebra mussel occurrences to the size (area or volume) of the lake, or the time period. There are more sightings during the summer months (approx. July-October). This is likely due to the fact that most sampling is done during the summer when the lakes are not frozen. Therefore, there is a significant bias for what time of year there are the most sightings of zerba mussels. In general, zebra mussel sightings do not appear correlated with either volume or surface area of lake, the timeframe (year) collected, or temperature. The only correlation is between the time of year and occurrences, and this is likely due to logistical sampling based limitations. Further analyses could be conducted on the relationship of zebra mussel occurrences to latitude, or a comparison with biotic characteristics such as the presence of another invasive species, quagga mussels. One question in this regard could be how long after introduction of quagga mussels zebra mussels persist before being outcompeted, since quagga mussels exist at much higher densities than zebra mussels. Projections under different temperature regimes based on global warming could also be carried out, though the analyses here demonstrate that temperatures found within this temperate biome is within the range tolerated by zebra mussels. However, zebra mussels may be affected by high temperatures in the southern United States, so predicted increasing temperatures may have an impact on populations in the future. Another area of analysis to conduct would be looking at boat travel and surveying loche use around the great lakes to see how this type of data relates to the zebra mussel sighting data. From the background information on zebra mussels, this type of analysis could confirm how the number of sightings has increased over the years depending on how much influx of boat travel in the Great Lakes there is. 
 
 
 # Easton comments
