@@ -3,9 +3,10 @@ title: "USGS NAS"
 author: "Mariah Boudreau, Kerria Burns, Amanda Jones"
 date: "12/5/2019"
 output:
-  pdf_document: default
   html_document:
     df_print: paged
+  pdf_document: default
+  word_document: default
 ---
 #Introduction
 
@@ -505,7 +506,7 @@ library(readxl)
 library(dplyr)
 library(ggplot2)
 lakes_92_18 <- read_excel("greatlakesavgtemp1992-2018.xlsx")
-every_lake <- read_excel("everylake1995-2018.xlsx")
+every_lake <- read_excel("every lake 1995-2018.xlsx")
 
 #This graph shows the average temperatures for the lakes over the course of the year
 
@@ -522,7 +523,7 @@ legend(0, 27, legend=c("Superior","Michigan","Huron","Erie","Ontario"),
 ```
 
 **Figure 12**
-This graph depicts the average temperatures for the lake over the course of the year.
+This graph depicts the average temperatures for the Great Lakes over the course of the year. Lake Superior is clearly colder than the rest of the Great Lakes, which is likely due to its higher latitude.
 
 
 ```{r Temp2, echo = FALSE, warning=FALSE, eval=FALSE}
@@ -621,9 +622,9 @@ legend(14, 60, legend=c("Superior","Michigan","Huron","Erie","Ontario"),
 
 
 **Figure 13** 
-The average temperature of each lake throughout the year shows that Lake Erie gets the warmest and Lake Superior is the coldest. The number of sightings per lake per year was compared with the high temperature of each lake for the years 1995-2018. Since the temperature data begins with 1995, there could not be a comparison including sighting data for any year prior to 1995. There are no significant correlaitons between the high temperature of the lake and the number of sightings that occurred during any given year. Therefore, it can be concluded that temperature is likely not a driving factor of zebra mussel spread or sighting collection. 
+The number of sightings per lake per year was compared with the high temperature of each lake for the years 1995-2018. The temperature data began with 1995, so no analyses could be performed on the sighting data prior to 1995. There are no significant correlations between the high temperature of the lakes and the number of sightings that occurred during any given year. Therefore, it can be concluded that temperature is not a driving factor of zebra mussel spread or a predictor for number of sightings in a given year. Further analysis may include temperature data for every lake throughout the entire year rather than just the highest recorded temperature for each year. The number of sightings is also not necessarily equivalent to the number of zebra mussels spotted.  
 
-```{r Bias, echo=FALSE, warning = FALSE, eval=FALSE}
+```{r Bias, echo=FALSE, warning=FALSE}
 #Looking at sampling efforts per month
 
 Sup_by_month <- dat %>%
@@ -660,11 +661,12 @@ legend(1, 100, legend=c("Superior","Michigan","Huron","Erie","Ontario"),
        col=c("blue","orange","green","red","purple"), lty=1, title= "Lake")
 
 ```
-
+**Figure 14**
+There is a clear increase in sampling during the summer months (~July-October) across all five lakes.  
 
 
 #Discussion
-This analysis was mostly a descriptive visualization--where, and when, are zebra mussels found? Additional linear models demonstrate no significant relationship of zebra mussel occurrences to the size (area or volume) of the lake, or the time period. There are more sightings during the summer months (approx. July-October). This is likely due to the fact that most sampling is done during the summer when the lakes are not frozen. Therefore, there is a significant bias for what time of year there are the most sightings of zerba mussels. In general, zebra mussel sightings do not appear correlated with either volume or surface area of lake, the timeframe (year) collected, or temperature. The only correlation is between the time of year and occurrences, and this is likely due to logistical sampling based limitations. Further analyses could be conducted on the relationship of zebra mussel occurrences to latitude, or a comparison with biotic characteristics such as the presence of another invasive species, quagga mussels. One question in this regard could be how long after introduction of quagga mussels zebra mussels persist before being outcompeted, since quagga mussels exist at much higher densities than zebra mussels. Projections under different temperature regimes based on global warming could also be carried out, though the analyses here demonstrate that temperatures found within this temperate biome is within the range tolerated by zebra mussels. However, zebra mussels may be affected by high temperatures in the southern United States, so predicted increasing temperatures may have an impact on populations in the future. Another area of analysis to conduct would be looking at boat travel and surveying loche use around the great lakes to see how this type of data relates to the zebra mussel sighting data. From the background information on zebra mussels, this type of analysis could confirm how the number of sightings has increased over the years depending on how much influx of boat travel in the Great Lakes there is. 
+This analysis was mostly a descriptive visualization--where, and when, are zebra mussels found? Additional linear models demonstrate no significant relationship of zebra mussel occurrences to the size (area or volume) of the lake, or the time period. There are more sightings during the summer months (approx. July-October). This is likely due to the fact that most sampling is done during the summer when the lakes are not frozen. Therefore, there is a significant bias for what time of year there are the most sightings of zerba mussels. In general, zebra mussel sightings do not appear correlated with either volume or surface area of lake, the timeframe (year) collected, or temperature. The only correlation is between the time of year and occurrences, and this is likely due to logistical sampling based limitations. Further analyses could be conducted on the relationship of zebra mussel occurrences to latitude, or a comparison with biotic characteristics such as the presence of another invasive species, quagga mussels. One question in this regard could be how long after introduction of quagga mussels do zebra mussels persist before being outcompeted, since quagga mussels exist at much higher densities than zebra mussels. Projections under different temperature regimes based on global warming could also be carried out, though the analyses here demonstrate that temperatures found within this temperate biome is within the range tolerated by zebra mussels. However, zebra mussels may be affected by high temperatures in the southern United States, so predicted increasing temperatures may have an impact on populations in the future. Another area of analysis to conduct would be looking at boat travel and surveying lock use around the Great Lakes to see how this type of data relates to the zebra mussel sighting data. From the background information on zebra mussels, this type of analysis could confirm how the number of sightings has increased over the years depending on how much influx of boat travel in the Great Lakes there is. 
 
 
 # Easton comments
