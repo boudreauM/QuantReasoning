@@ -3,9 +3,9 @@ title: "USGS NAS"
 author: "Mariah Boudreau, Kerria Burns, Amanda Jones"
 date: "12/5/2019"
 output:
+  pdf_document: default
   html_document:
     df_print: paged
-  pdf_document: default
   word_document: default
 ---
 #Introduction
@@ -57,6 +57,7 @@ fil_dat <- select(dat, Specimen.Number, Species.ID, Group, Family, Scientific.Na
 # Just looking at some different ways to visualize and understand the data
 ggplot(fil_dat, aes(x=dat$HUC.8.Number, y=dat$State)) + geom_point(aes(col=dat$Year), size=3) +labs(title="HUC Number vs. State", subtitle="From USGS Zebra Mussel Dataset", y="State", x="HUC Number", col = "Years") 
 ```
+
 **Figure 1**
 This graph is one way in which the data set from the USGS zebra mussel data can be visualized. The horizontal axis represents the HUC Number and it is plotted again the state in which that HUC resides. The color of the point exhibits the time when the data was collected. There appears to be an even spread of years throughout the plot given by the various color gradients. 
 
@@ -80,7 +81,6 @@ barplot(counts, main="HUC Distribution",
 
 
 ```
-
 
 **Figure 2**
 Number of zebra mussel occurrences per Hydraulic Unit Code.
@@ -506,7 +506,7 @@ library(readxl)
 library(dplyr)
 library(ggplot2)
 lakes_92_18 <- read_excel("greatlakesavgtemp1992-2018.xlsx")
-every_lake <- read_excel("every lake 1995-2018.xlsx")
+every_lake <- read_excel("everylake1995-2018.xlsx")
 
 #This graph shows the average temperatures for the lakes over the course of the year
 
@@ -521,6 +521,7 @@ legend(0, 27, legend=c("Superior","Michigan","Huron","Erie","Ontario"),
 
 
 ```
+
 
 **Figure 12**
 This graph depicts the average temperatures for the Great Lakes over the course of the year. Lake Superior is clearly colder than the rest of the Great Lakes, which is likely due to its higher latitude.
@@ -627,6 +628,8 @@ The number of sightings per lake per year was compared with the high temperature
 ```{r Bias, echo=FALSE, warning=FALSE}
 #Looking at sampling efforts per month
 
+library(stringr)
+
 Sup_by_month <- dat %>%
   select(Locality,Month) %>%
   filter(str_detect(Locality,"Superior"))%>%
@@ -682,7 +685,7 @@ Things to do for final draft:
 - Have a short paragraph that summarizes and puts your results in context
 
 
-References
+##References
 Hebert, P. D. N., Mackie, G. L., & Muncaster, B. W. (1989). Ecological and Genetic Studies on Dreissena polymorpha ( Pallas ): A New Mollusc in the Great Lakes. Candian Journal of Fisheries and Aquatic Sciences. https://doi.org/10.1139/f89-202
 
 Macisaac, H. J. (2014). Potential Abiotic and Biotic Impacts of Zebra Mussels on the Inland Waters of North America Potential Abiotic and Biotic Impacts of Zebra Mussels on the, (March). https://doi.org/10.1093/icb/36.3.287
